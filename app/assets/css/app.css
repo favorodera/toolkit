@@ -1,0 +1,34 @@
+@import './tailwind.css';
+
+@theme inline {
+  --font-geist: 'Geist', sans-serif;
+
+  --default-font-family: var(--font-geist);
+
+  --header-height: calc(var(--spacing) * 14);
+}
+
+@layer base {
+  body {
+    @apply antialiased scheme-light dark:scheme-dark;
+  }
+}
+
+::-ms-reveal {
+  display: none;
+}
+
+.fade-out-in-enter-active,
+.fade-out-in-leave-active {
+  transition: all 300ms ease;
+}
+
+.fade-out-in-enter-from,
+.fade-out-in-leave-to {
+  opacity: 0;
+}
+
+.fade-out-in-enter-to,
+.fade-out-in-leave-from {
+  opacity: 1;
+}
