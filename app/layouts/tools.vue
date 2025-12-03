@@ -50,7 +50,10 @@ const toolName = computed(() => route.meta.toolName ?? '')
           </div>
         </UiButton>
         
-        <UiCommandDialog v-model:open="isCommandOpen">
+        <UiCommandDialog
+          v-model:open="isCommandOpen"
+          title="Search Toolkit"
+        >
 
           <UiCommandInput placeholder="Search tools..." />
 
@@ -65,6 +68,8 @@ const toolName = computed(() => route.meta.toolName ?? '')
                 :key="tool.name"
                 :value="tool.name"
                 as-child
+                class="cursor-pointer"
+                @click="isCommandOpen = false"
               >
                 <NuxtLink :to="tool.path">
                   {{ tool.name }}

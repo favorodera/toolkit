@@ -1,3 +1,10 @@
+<script lang="ts" setup>
+defineProps<{
+  title:string
+  subtitle?:string
+}>()
+</script>
+
 <template>
   <section>
 
@@ -18,21 +25,22 @@
           xl:text-5xl xl:tracking-tighter
         "
       >
-        The Practical Web Tools you need
+        {{ title }}
       </h1>
 
       <p
+      v-if="subtitle"
         class="
           max-w-3xl text-base text-balance text-foreground
           sm:text-lg
         "
       >
-        Design, development, and utility tools in one place. No accounts, no tracking, open source.
+       {{ subtitle }}
       </p>
 
       <div class="flex w-full items-center justify-center gap-2 pt-2">
 
-        <UiButton>Explore Toolkit</UiButton>
+        <slot name="actions"></slot>
 
       </div>
 

@@ -10,18 +10,18 @@ const input = ref('')
 
 const output = computed(() => {
   // Count words (split by whitespace and filter empty strings)
-  const words = computed(() => input.value.trim() ? input.value.trim().split(/\s+/).length : 0)
+  const words = input.value.trim() ? input.value.trim().split(/\s+/).length : 0
 
   // Count all characters including spaces
-  const characters = computed(() => input.value.length)
+  const characters = input.value.length
 
   // Count special characters (non-alphanumeric, non-whitespace)
-  const specialCharacters = computed(() => (input.value.match(/[^a-zA-Z0-9\s]/g) || []).length)
+  const specialCharacters = (input.value.match(/[^a-zA-Z0-9\s]/g) || []).length
 
   // Count paragraphs (split by double line breaks)
-  const paragraphs = computed(() => input.value.trim() ? input.value.split(/\n\s*\n/).filter(p => p.trim()).length : 0)
+  const paragraphs = input.value.trim() ? input.value.split(/\n\s*\n/).filter(p => p.trim()).length : 0
 
-  const topWords = computed(() => {
+  function topWords() {
     if (!input.value.trim()) return []
     
     // Extract words and count frequency
@@ -34,10 +34,10 @@ const output = computed(() => {
     
     // Sort by frequency and return top 10
     return Array.from(frequency.entries())
-      .sort((a, b) => b[1] - a[1])
+      .sort((entryA, entryB) => entryB[1] - entryA[1])
       .slice(0, 10)
       .map(([word, count]) => ({ word, count }))
-  })
+  }
 
   return {
     words,
@@ -100,7 +100,7 @@ const output = computed(() => {
 
       <UiDialog>
 
-        <UiDialogTrigger>
+        <UiDialogTrigger v-if="output.words">
           
           <UiTooltip>
 
@@ -145,7 +145,7 @@ const output = computed(() => {
             </UiItem>
 
             <UiItem
-              v-for="words, index in reactivePick(output, 'topWords').topWords"
+              v-for="words, index in output.topWords()"
               :key="index"
               variant="outline"
               size="sm"
@@ -157,7 +157,6 @@ const output = computed(() => {
             </UiItem>
 
           </UiItemGroup>
-
 
         </UiDialogContent>
 

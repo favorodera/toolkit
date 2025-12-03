@@ -1,4 +1,13 @@
 <script lang="ts" setup>
+
+defineProps<{
+  registry:{
+    name: string
+  description: string
+  icon: string
+  path: string
+  }[]
+}>()
 </script>
 
 <template>
@@ -6,17 +15,18 @@
 
     <div
       class="
-        container mx-auto grid grid-cols-1 items-center gap-2 py-8
+        container mx-auto grid grid-cols-1 items-center gap-4 py-8
         sm:grid-cols-2
         lg:grid-cols-3
       "
     >
 
       <UiItem
-        v-for="tool, index in toolsRegistry"
+        v-for="tool, index in registry"
         :key="index"
         variant="outline"
         as-child
+        :title="tool.description"
       >
 
         <NuxtLink :to="tool.path">
@@ -30,7 +40,7 @@
 
           <UiItemContent>
             <UiItemTitle>{{ tool.name }}</UiItemTitle>
-            <UiItemDescription>{{ tool.description }}</UiItemDescription>
+            <UiItemDescription class="line-clamp-2">{{ tool.description }}</UiItemDescription>
           </UiItemContent>
 
         </NuxtLink>
