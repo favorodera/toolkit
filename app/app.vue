@@ -1,7 +1,9 @@
 <template>
   <div>
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
+    <UiTooltipProvider>
+      <NuxtLayout>
+        <NuxtPage />
+      </NuxtLayout>
+    </UiTooltipProvider>
   </div>
 </template>
