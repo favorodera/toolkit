@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 
 defineProps<{
-  registry:{
+  registry: {
     name: string
-  description: string
-  icon: string
-  path: string
+    description: string
+    icon: string
+    path: string
   }[]
 }>()
 </script>

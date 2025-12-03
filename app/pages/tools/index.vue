@@ -1,7 +1,10 @@
 <template>
   <div>
-    <AppHero title="Tools Registry" class="*:md:py-8 *:lg:py-8"></AppHero>
+    <AppHero
+      title="Tools Registry"
+      class="*:md:py-8 *:lg:py-8"
+    />
 
-    <AppToolsGrid :registry="toolsRegistry"/>
+    <AppToolsGrid :registry="toolsRegistry" />
   </div>
 </template>

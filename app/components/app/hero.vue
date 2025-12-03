@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 defineProps<{
-  title:string
-  subtitle?:string
+  title: string
+  subtitle?: string
 }>()
 </script>
 
@@ -29,18 +29,18 @@ defineProps<{
       </h1>
 
       <p
-      v-if="subtitle"
+        v-if="subtitle"
         class="
           max-w-3xl text-base text-balance text-foreground
           sm:text-lg
         "
       >
-       {{ subtitle }}
+        {{ subtitle }}
       </p>
 
       <div class="flex w-full items-center justify-center gap-2 pt-2">
 
-        <slot name="actions"></slot>
+        <slot name="actions" />
 
       </div>
 
