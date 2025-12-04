@@ -11,7 +11,7 @@ export default withNuxt()
     rules: { ...betterTailwind.configs['recommended-warn'].rules },
     settings: {
       'better-tailwindcss': {
-        entryPoint: './app/assets/css/tailwind.css',
+        entryPoint: './app/assets/css/index.css',
       },
     },
   })
