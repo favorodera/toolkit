@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@vueuse/nuxt',
     'shadcn-nuxt',
+    '@nuxtjs/seo',
   ],
 
   devtools: { enabled: true },
@@ -30,6 +31,12 @@ export default defineNuxtConfig({
     '~/assets/css/app.css',
     '~/assets/css/index.css',
   ],
+
+  site: {
+    url: 'https://toolkitdotweb.vercel.app/',
+    name: 'Toolkit',
+    description: 'Design, development, and utility tools in one place. No accounts, no tracking, open source.',
+  },
 
   experimental: {
     typedPages: true,
