@@ -6,6 +6,7 @@
   }
 }
 
+
 @theme inline {
   --font-geist: 'Geist', sans-serif;
 
@@ -14,13 +15,19 @@
   --header-height: calc(var(--spacing) * 14);
 }
 
+
 @utility scrollbar-thin {
   scrollbar-width: thin;
 }
 
+/* #app {
+  @apply relative flex min-h-svh flex-col px-2 pb-2 sm:px-4 sm:pb-4
+} */
+
 ::-ms-reveal {
   display: none;
 }
+
 
 .fade-out-in-enter-active,
 .fade-out-in-leave-active {

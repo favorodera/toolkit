@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'shadcn-nuxt',
     '@nuxtjs/seo',
+    'motion-v/nuxt',
   ],
 
   devtools: { enabled: true },

@@ -18,12 +18,7 @@ whenever(() => command?.value, () => isCommandOpen.value = true)
 
 <template>
   
-  <div
-    class="
-      relative flex min-h-svh flex-col gap-4 px-2 pb-2
-      sm:px-4 sm:pb-4
-    "
-  >
+  <div>
     <AppHeader>
 
       <template #right>

@@ -2,6 +2,10 @@
 definePageMeta({
   layout: 'tools',
 })
+
+useSeoMeta({
+  title: 'Tools Registry',
+})
 </script>
 
 <template>

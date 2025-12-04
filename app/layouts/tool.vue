@@ -6,12 +6,7 @@ const toolName = computed(() => route.meta.toolName ?? '')
 
 <template>
   
-  <div
-    class="
-      relative flex min-h-svh flex-col gap-4 px-2 pb-2
-      sm:px-4 sm:pb-4
-    "
-  >
+  <div>
     <AppHeader />
 
     <main class="container mx-auto flex flex-1 flex-col gap-6">

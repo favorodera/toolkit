@@ -3,7 +3,11 @@ import { useChangeCase, type ChangeCaseType } from '@vueuse/integrations/useChan
 
 definePageMeta({
   layout: 'tool',
-  toolName: 'Case Converter',
+  toolName: 'Text Case Converter',
+})
+
+useSeoMeta({
+  title: 'Text Case Converter',
 })
 
 const mainCaseTypes = ref<ChangeCaseType[]>([
