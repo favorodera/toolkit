@@ -1,5 +1,19 @@
 <script lang="ts" setup>
 const isCommandOpen = ref(false)
+
+const { command } = useMagicKeys({
+  passive: false,
+  aliasMap: {
+    command: 'control+k',
+  },
+  onEventFired(event) {
+    if (event.ctrlKey && event.key === 'k') {
+      event.preventDefault()
+    }
+  },
+})
+
+whenever(() => command?.value, () => isCommandOpen.value = true)
 </script>
 
 <template>
@@ -27,7 +41,7 @@ const isCommandOpen = ref(false)
               sm:not-sr-only
             "
           >
-            Search Tools...
+            Search Tools Registry
           </span>
 
           <Icon
