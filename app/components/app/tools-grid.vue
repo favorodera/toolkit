@@ -27,6 +27,7 @@ defineProps<{
         variant="outline"
         as-child
         :title="tool.description"
+        class="h-full"
       >
 
         <NuxtLink :to="tool.path">
@@ -40,7 +41,7 @@ defineProps<{
 
           <UiItemContent>
             <UiItemTitle>{{ tool.name }}</UiItemTitle>
-            <UiItemDescription class="line-clamp-2">{{ tool.description }}</UiItemDescription>
+            <UiItemDescription class="line-clamp-1 text-pretty">{{ tool.description }}</UiItemDescription>
           </UiItemContent>
 
         </NuxtLink>
