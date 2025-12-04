@@ -51,7 +51,7 @@ const output = computed(() => {
 </script>
 
 <template>
-  <div>
+  <section>
 
     <div class="@container relative grid">
 
@@ -140,7 +140,12 @@ const output = computed(() => {
 
             <UiItem class="mb-2 w-full justify-between gap-4 p-0">
 
-              <span>Word</span> <span>Count</span>
+              <UiItemContent>
+                <UiItemTitle class="flex w-full justify-between gap-4">
+                  <span>Word</span>
+                  <span>Count</span>
+                </UiItemTitle>
+              </UiItemContent>
 
             </UiItem>
 
@@ -149,11 +154,14 @@ const output = computed(() => {
               :key="index"
               variant="outline"
               size="sm"
-              class="mt-1 w-full justify-between gap-4 p-2 capitalize"
+              class="mt-1 w-full p-2 capitalize"
             >
-
-              <span>{{ words.word }}</span> <span>{{ words.count }}</span>
-
+              <UiItemContent>
+                <UiItemTitle class="flex w-full justify-between gap-4">
+                  <span>{{ words.word }}</span>
+                  <span>{{ words.count }}</span>
+                </UiItemTitle>
+              </UiItemContent>
             </UiItem>
 
           </UiItemGroup>
@@ -164,5 +172,5 @@ const output = computed(() => {
 
     </div>
 
-  </div>
+  </section>
 </template>
