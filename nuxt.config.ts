@@ -25,7 +25,11 @@ export default defineNuxtConfig({
     layoutTransition: { name: 'fade-out-in', mode: 'out-in' },
   },
 
-  css: ['~/assets/css/tailwind.css', '~/assets/css/app.css'],
+  css: [
+    '~/assets/css/tailwind.css',
+    '~/assets/css/app.css',
+    '~/assets/css/index.css',
+  ],
 
   experimental: {
     typedPages: true,
