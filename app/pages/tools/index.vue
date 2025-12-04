@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+definePageMeta({
+  layout: 'tools',
+})
+</script>
+
 <template>
   <div>
     <AppHero
