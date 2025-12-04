@@ -2,7 +2,7 @@
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
 
 definePageMeta({
-  layout: 'tools',
+  layout: 'tool',
   toolName: 'Word Counter',
 })
 
@@ -149,7 +149,7 @@ const output = computed(() => {
               :key="index"
               variant="outline"
               size="sm"
-              class="mt-1 w-full justify-between gap-4 p-2"
+              class="mt-1 w-full justify-between gap-4 p-2 capitalize"
             >
 
               <span>{{ words.word }}</span> <span>{{ words.count }}</span>
