@@ -1,5 +1,11 @@
 @import './tailwind.css';
 
+@layer base {
+  body {
+    @apply antialiased scheme-light dark:scheme-dark;
+  }
+}
+
 @theme inline {
   --font-geist: 'Geist', sans-serif;
 
@@ -8,10 +14,8 @@
   --header-height: calc(var(--spacing) * 14);
 }
 
-@layer base {
-  body {
-    @apply antialiased scheme-light dark:scheme-dark;
-  }
+@utility scrollbar-thin {
+  scrollbar-width: thin;
 }
 
 ::-ms-reveal {
