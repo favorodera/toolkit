@@ -1,6 +1,6 @@
 <template>
 
-  <div class="w-full">
+  <div class="contents">
 
     <AppHero
       title="The Practical Web Tools you need"

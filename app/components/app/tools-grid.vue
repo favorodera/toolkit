@@ -35,58 +35,53 @@ const animateChild = ref<MotionProps['variants']>({
 </script>
 
 <template>
-  <section class="w-full">
+  <Motion
+    initial="initial"
+    while-in-view="animate"
+    :in-view-options="{ once: true }"
+    :variants="animateParent"
+    as="div"
+    class="
+      container mx-auto grid grid-cols-1 items-center gap-4 py-8
+      sm:grid-cols-2
+      lg:grid-cols-3
+    "
+  >
 
     <Motion
-      initial="initial"
-      while-in-view="animate"
-      :in-view-options="{ once: true }"
-      :variants="animateParent"
-      as="div"
-      class="
-        container mx-auto grid grid-cols-1 items-center gap-4 py-8
-        sm:grid-cols-2
-        lg:grid-cols-3
-      "
+      v-for="tool, index in registry"
+      :key="index"
+      as-child
+      :variants="animateChild"
     >
 
-      <Motion
-        v-for="tool, index in registry"
-        :key="index"
+      <UiItem
+        variant="outline"
         as-child
-        :variants="animateChild"
+        :title="tool.description"
+        class="h-full"
       >
 
-        <UiItem
-          variant="outline"
-          as-child
-          :title="tool.description"
-          class="h-full"
-        >
+        <NuxtLink :to="tool.path">
 
-          <NuxtLink :to="tool.path">
+          <UiItemMedia>
+            <Icon
+              :name="tool.icon"
+              class="size-12"
+            />
+          </UiItemMedia>
 
-            <UiItemMedia>
-              <Icon
-                :name="tool.icon"
-                class="size-12"
-              />
-            </UiItemMedia>
+          <UiItemContent>
+            <UiItemTitle>{{ tool.name }}</UiItemTitle>
+            <UiItemDescription class="line-clamp-1 text-pretty">{{ tool.description }}</UiItemDescription>
+          </UiItemContent>
 
-            <UiItemContent>
-              <UiItemTitle>{{ tool.name }}</UiItemTitle>
-              <UiItemDescription class="line-clamp-1 text-pretty">{{ tool.description }}</UiItemDescription>
-            </UiItemContent>
+        </NuxtLink>
 
-          </NuxtLink>
-
-        </UiItem>
-
-      </Motion>
-     
+      </UiItem>
 
     </Motion>
+     
 
-  </section>
-  
+  </Motion>
 </template>

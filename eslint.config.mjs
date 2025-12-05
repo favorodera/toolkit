@@ -15,3 +15,8 @@ export default withNuxt()
       },
     },
   })
+  .overrideRules({
+    rules: {
+      'better-tailwindcss/consistent-line-wrapping': 'off',
+    },
+  })

@@ -52,63 +52,59 @@ const copy = async (key: string | number, text: string) => {
 </script>
 
 <template>
-  <section>
+  <section
+    class="
+      @container relative grid gap-8
+      lg:grid-cols-2
+    "
+  >
+    <UiTextarea
+      id="case-converter-textarea"
+      v-model="input"
+      spellcheck
+      autocorrect
+      class="h-[calc(100dvh-30rem)]"
+      placeholder="Type or paste text here ..."
+    />
+
     <div
       class="
-        @container relative grid gap-8
-        lg:grid-cols-2
+        max-h-[calc(100dvh-16rem)] self-start overflow-y-auto rounded-md border
+        px-4 pb-4 scrollbar-thin
       "
     >
-      <UiTextarea
-        id="case-converter-textarea"
-        v-model="input"
-        spellcheck
-        autocorrect
-        class="h-[calc(100dvh-30rem)]"
-        placeholder="Type or paste text here ..."
-      />
+      <p class="sticky top-0 bg-background py-4 text-lg font-semibold">
+        Select Preferred Case
+      </p>
 
-      <div
-        class="
-          max-h-[calc(100dvh-16rem)] self-start overflow-y-auto rounded-md
-          border px-4 pb-4 scrollbar-thin
-        "
-      >
-        <p class="sticky top-0 bg-background py-4 text-lg font-semibold">
-          Select Preferred Case
-        </p>
+      <UiItemGroup class="gap-4">
+        <UiItem
+          v-for="result, key in output"
+          :key
+          variant="outline"
+          class="flex-nowrap"
+        >
+          <UiItemContent>
+            <UiItemTitle>{{ key }}</UiItemTitle>
+            <UiItemDescription class="line-clamp-1 break-all">
+              {{ result }}
+            </UiItemDescription>
+          </UiItemContent>
 
-        <UiItemGroup class="gap-4">
-          <UiItem
-            v-for="result, key in output"
-            :key
-            variant="outline"
-            class="flex-nowrap"
-          >
-            <UiItemContent>
-              <UiItemTitle>{{ key }}</UiItemTitle>
-              <UiItemDescription class="line-clamp-1 break-all">
-                {{ result }}
-              </UiItemDescription>
-            </UiItemContent>
+          <UiItemActions>
+            <UiButton
+              size="icon-sm"
+              variant="outline"
+              @click="copy(key, result)"
+            >
+              <Icon :name="copiedKey === key ? 'lucide:copy-check' : 'lucide:copy'" />
+            </UiButton>
+          </UiItemActions>
 
-            <UiItemActions>
-              <UiButton
-                size="icon-sm"
-                variant="outline"
-                @click="copy(key, result)"
-              >
-                <Icon :name="copiedKey === key ? 'lucide:copy-check' : 'lucide:copy'" />
-              </UiButton>
-            </UiItemActions>
-
-          </UiItem>
-        </UiItemGroup>
-
-      </div>
+        </UiItem>
+      </UiItemGroup>
 
     </div>
 
   </section>
-
 </template>

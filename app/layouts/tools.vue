@@ -18,7 +18,8 @@ whenever(() => command?.value, () => isCommandOpen.value = true)
 
 <template>
   
-  <div>
+  <div class="flex flex-1 flex-col">
+    
     <AppHeader>
 
       <template #right>
@@ -92,7 +93,7 @@ whenever(() => command?.value, () => isCommandOpen.value = true)
 
     </AppHeader>
 
-    <main class="container mx-auto flex flex-1 flex-col gap-6">
+    <main class="flex flex-1 flex-col gap-6">
 
       <slot />
 

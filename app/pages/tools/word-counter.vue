@@ -55,127 +55,123 @@ const output = computed(() => {
 </script>
 
 <template>
-  <section>
+  <div class="@container relative grid">
 
-    <div class="@container relative grid">
+    <div
+      class="
+        grid rounded-t-md border
+        @max-md:divide-y
+        @md:grid-cols-2
+        @4xl:grid-cols-4
+      "
+    >
 
       <div
+        v-for="value, key in reactiveOmit(output, 'topWords')"
+        :key
         class="
-          grid rounded-t-md border
-          @max-md:divide-y
-          @md:grid-cols-2
-          @4xl:grid-cols-4
+          flex flex-1 flex-col justify-center gap-1 px-6 py-4 text-left
+          sm:px-8 sm:py-6
+          @md:first:border-b @md:even:border-l @md:nth-[2]:border-r
+          @md:nth-[2]:border-b
         "
       >
 
-        <div
-          v-for="value, key in reactiveOmit(output, 'topWords')"
-          :key
+        <span class="text-xs text-muted-foreground uppercase">{{ useChangeCase(key, 'sentenceCase') }}</span>
+
+        <span
           class="
-            flex flex-1 flex-col justify-center gap-1 px-6 py-4 text-left
-            sm:px-8 sm:py-6
-            @md:first:border-b @md:even:border-l @md:nth-[2]:border-r
-            @md:nth-[2]:border-b
+            text-lg leading-none font-bold
+            sm:text-3xl
           "
         >
-
-          <span class="text-xs text-muted-foreground uppercase">{{ useChangeCase(key, 'sentenceCase') }}</span>
-
-          <span
-            class="
-              text-lg leading-none font-bold
-              sm:text-3xl
-            "
-          >
-            {{ value }}
-          </span>
-
-        </div>
+          {{ value }}
+        </span>
 
       </div>
 
-      <UiTextarea
-        id="text-counter-textarea"
-        v-model="input"
-        spellcheck
-        autocorrect
-        class="h-[calc(100dvh-16rem)] rounded-t-none"
-        placeholder="Type or paste text here ..."
-      />
-
-      <UiDialog>
-
-        <UiDialogTrigger v-if="output.words">
-          
-          <UiTooltip>
-
-            <UiTooltipTrigger as-child>
-
-              <UiButton
-                size="icon"
-                class="absolute right-4 bottom-4"
-                variant="outline"
-              >
-                <Icon name="lucide:chart-no-axes-column-increasing" />
-              </UiButton>
-
-            </UiTooltipTrigger>
-            
-            <UiTooltipContent>
-              <p>Top 10 words</p>
-            </UiTooltipContent>
-
-          </UiTooltip>
-
-        </UiDialogTrigger>
-
-        <UiDialogContent class="sm:max-w-3xl">
-
-          <UiDialogHeader>
-            <UiDialogTitle class="flex gap-1">
-              <Icon
-                name="lucide:chart-no-axes-column-increasing"
-                class="h-lh"
-              />
-              Top 10 Words
-            </UiDialogTitle>
-          </UiDialogHeader>
-
-          <UiItemGroup>
-
-            <UiItem class="mb-2 w-full justify-between gap-4 p-0">
-
-              <UiItemContent>
-                <UiItemTitle class="flex w-full justify-between gap-4">
-                  <span>Word</span>
-                  <span>Count</span>
-                </UiItemTitle>
-              </UiItemContent>
-
-            </UiItem>
-
-            <UiItem
-              v-for="words, index in output.topWords()"
-              :key="index"
-              variant="outline"
-              size="sm"
-              class="mt-1 w-full p-2 capitalize"
-            >
-              <UiItemContent>
-                <UiItemTitle class="flex w-full justify-between gap-4">
-                  <span>{{ words.word }}</span>
-                  <span>{{ words.count }}</span>
-                </UiItemTitle>
-              </UiItemContent>
-            </UiItem>
-
-          </UiItemGroup>
-
-        </UiDialogContent>
-
-      </UiDialog>
-
     </div>
 
-  </section>
+    <UiTextarea
+      id="text-counter-textarea"
+      v-model="input"
+      spellcheck
+      autocorrect
+      class="h-[calc(100dvh-20rem)] rounded-t-none"
+      placeholder="Type or paste text here ..."
+    />
+
+    <UiDialog>
+
+      <UiDialogTrigger v-if="output.words">
+          
+        <UiTooltip>
+
+          <UiTooltipTrigger as-child>
+
+            <UiButton
+              size="icon"
+              class="absolute right-4 bottom-4"
+              variant="outline"
+            >
+              <Icon name="lucide:chart-no-axes-column-increasing" />
+            </UiButton>
+
+          </UiTooltipTrigger>
+            
+          <UiTooltipContent>
+            <p>Top 10 words</p>
+          </UiTooltipContent>
+
+        </UiTooltip>
+
+      </UiDialogTrigger>
+
+      <UiDialogContent class="sm:max-w-3xl">
+
+        <UiDialogHeader>
+          <UiDialogTitle class="flex gap-1">
+            <Icon
+              name="lucide:chart-no-axes-column-increasing"
+              class="h-lh"
+            />
+            Top 10 Words
+          </UiDialogTitle>
+        </UiDialogHeader>
+
+        <UiItemGroup>
+
+          <UiItem class="mb-2 w-full justify-between gap-4 p-0">
+
+            <UiItemContent>
+              <UiItemTitle class="flex w-full justify-between gap-4">
+                <span>Word</span>
+                <span>Count</span>
+              </UiItemTitle>
+            </UiItemContent>
+
+          </UiItem>
+
+          <UiItem
+            v-for="words, index in output.topWords()"
+            :key="index"
+            variant="outline"
+            size="sm"
+            class="mt-1 w-full p-2 capitalize"
+          >
+            <UiItemContent>
+              <UiItemTitle class="flex w-full justify-between gap-4">
+                <span>{{ words.word }}</span>
+                <span>{{ words.count }}</span>
+              </UiItemTitle>
+            </UiItemContent>
+          </UiItem>
+
+        </UiItemGroup>
+
+      </UiDialogContent>
+
+    </UiDialog>
+
+  </div>
 </template>

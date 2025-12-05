@@ -25,7 +25,7 @@ useHead({
 <template>
   <div
     class="
-      relative grid min-h-svh flex-col px-2 pb-2
+      relative flex min-h-svh flex-col px-2 pb-2
       sm:px-4 sm:pb-4
     "
   >
