@@ -60,6 +60,7 @@ const copy = async (key: string | number, text: string) => {
       "
     >
       <UiTextarea
+        id="case-converter-textarea"
         v-model="input"
         spellcheck
         autocorrect
