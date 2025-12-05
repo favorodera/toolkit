@@ -95,6 +95,7 @@ const output = computed(() => {
       </div>
 
       <UiTextarea
+        id="text-counter-textarea"
         v-model="input"
         spellcheck
         autocorrect
