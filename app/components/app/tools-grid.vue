@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { type MotionProps, stagger } from 'motion-v'
 
 defineProps<{
   registry: {
@@ -8,12 +9,40 @@ defineProps<{
     path: string
   }[]
 }>()
+
+const animateParent = ref<MotionProps['variants']>({
+  initial: {},
+  animate: {
+    transition: {
+      when: 'beforeChildren',
+      delayChildren: stagger(0.12),
+    },
+  },
+})
+
+const animateChild = ref<MotionProps['variants']>({
+  initial: { opacity: 0, y: 15 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: 'spring',
+      stiffness: 200,
+      damping: 20,
+    },
+  },
+})
 </script>
 
 <template>
   <section class="w-full">
 
-    <div
+    <Motion
+      initial="initial"
+      while-in-view="animate"
+      :in-view-options="{ once: true }"
+      :variants="animateParent"
+      as="div"
       class="
         container mx-auto grid grid-cols-1 items-center gap-4 py-8
         sm:grid-cols-2
@@ -21,34 +50,43 @@ defineProps<{
       "
     >
 
-      <UiItem
+      <Motion
         v-for="tool, index in registry"
         :key="index"
-        variant="outline"
         as-child
-        :title="tool.description"
-        class="h-full"
+        :variants="animateChild"
       >
 
-        <NuxtLink :to="tool.path">
+        <UiItem
+          variant="outline"
+          as-child
+          :title="tool.description"
+          class="h-full"
+        >
 
-          <UiItemMedia>
-            <Icon
-              :name="tool.icon"
-              class="size-12"
-            />
-          </UiItemMedia>
+          <NuxtLink :to="tool.path">
 
-          <UiItemContent>
-            <UiItemTitle>{{ tool.name }}</UiItemTitle>
-            <UiItemDescription class="line-clamp-1 text-pretty">{{ tool.description }}</UiItemDescription>
-          </UiItemContent>
+            <UiItemMedia>
+              <Icon
+                :name="tool.icon"
+                class="size-12"
+              />
+            </UiItemMedia>
 
-        </NuxtLink>
+            <UiItemContent>
+              <UiItemTitle>{{ tool.name }}</UiItemTitle>
+              <UiItemDescription class="line-clamp-1 text-pretty">{{ tool.description }}</UiItemDescription>
+            </UiItemContent>
 
-      </UiItem>
+          </NuxtLink>
 
-    </div>
+        </UiItem>
+
+      </Motion>
+     
+
+    </Motion>
 
   </section>
+  
 </template>

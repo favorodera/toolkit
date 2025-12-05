@@ -8,7 +8,7 @@ const title = computed(() => props.error.statusMessage ?? 'Error')
 
 useSeoMeta({ title })
 
-const childVariant = ref<MotionProps['variants']>({
+const animateChild = ref<MotionProps['variants']>({
   initial: { opacity: 0, y: 15 },
   animate: {
     opacity: 1,
@@ -118,7 +118,7 @@ const childVariant = ref<MotionProps['variants']>({
 
     <Motion
       as="h1"
-      :variants="childVariant"
+      :variants="animateChild"
       class="
         mb-3 text-6xl font-bold text-primary
         sm:text-7xl
@@ -129,7 +129,7 @@ const childVariant = ref<MotionProps['variants']>({
 
     <Motion
       as="h2"
-      :variants="childVariant"
+      :variants="animateChild"
       class="
         mb-4 text-2xl font-semibold tracking-tight
         lg:text-3xl
@@ -140,7 +140,7 @@ const childVariant = ref<MotionProps['variants']>({
 
     <Motion
       as="p"
-      :variants="childVariant"
+      :variants="animateChild"
       class="
         mb-8 text-base text-muted-foreground
         sm:text-lg
@@ -152,7 +152,7 @@ const childVariant = ref<MotionProps['variants']>({
 
     <Motion
       as="div"
-      :variants="childVariant"
+      :variants="animateChild"
       class="flex flex-wrap items-center justify-center gap-3"
     >
       <UiButton @click="clearError({ redirect: '/' })">

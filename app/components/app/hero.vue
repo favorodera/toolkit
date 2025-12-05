@@ -6,7 +6,17 @@ defineProps<{
   subtitle?: string
 }>()
 
-const childVariant = ref<MotionProps['variants']>({
+const animateParent = ref<MotionProps['variants']>({
+  initial: {},
+  animate: {
+    transition: {
+      when: 'beforeChildren',
+      delayChildren: stagger(0.12),
+    },
+  },
+})
+
+const animateChild = ref<MotionProps['variants']>({
   initial: { opacity: 0, y: 15 },
   animate: {
     opacity: 1,
@@ -25,18 +35,9 @@ const childVariant = ref<MotionProps['variants']>({
 
     <Motion
       initial="initial"
-      in-view="animate"
+      while-in-view="animate"
       :in-view-options="{ once: true }"
-      :variants="{
-        initial: { opacity: 0 },
-        animate: {
-          opacity: 1,
-          transition: {
-            when: 'beforeChildren',
-            delayChildren: stagger(0.12),
-          },
-        },
-      }"
+      :variants="animateParent"
       as="div"
       class="
         container mx-auto flex flex-col items-center gap-2 py-8 text-center
@@ -48,7 +49,7 @@ const childVariant = ref<MotionProps['variants']>({
 
       <Motion
         as="h1"
-        :variants="childVariant"
+        :variants="animateChild"
         class="
           max-w-4xl text-4xl leading-tight font-semibold tracking-tight
           text-balance text-primary
@@ -62,7 +63,7 @@ const childVariant = ref<MotionProps['variants']>({
       <Motion
         v-if="subtitle"
         as="p"
-        :variants="childVariant"
+        :variants="animateChild"
         class="
           max-w-3xl text-base text-balance text-foreground
           sm:text-lg
@@ -73,7 +74,7 @@ const childVariant = ref<MotionProps['variants']>({
 
       <Motion
         as="div"
-        :variants="childVariant"
+        :variants="animateChild"
         class="flex w-full items-center justify-center gap-2 pt-2"
       >
 
