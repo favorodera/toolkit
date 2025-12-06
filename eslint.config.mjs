@@ -5,18 +5,21 @@ import vueA11y from 'eslint-plugin-vuejs-accessibility'
 
 export default withNuxt()
   .append(config)
-  .append(vueA11y.configs['flat/recommended'])
+  .append({
+    plugins: { 'vuejs-accessibility': vueA11y },
+    rules: { ...vueA11y.configs['flat/recommended'].rules },
+    ignores: ['./app/components/ui/**'],
+  })
   .append({
     plugins: { 'better-tailwindcss': betterTailwind },
-    rules: { ...betterTailwind.configs['recommended-warn'].rules },
+    rules: {
+      ...betterTailwind.configs['recommended-warn'].rules,
+      'better-tailwindcss/consistent-line-wrapping': 'off',
+      'better-tailwindcss/no-unregistered-classes': ['warn', { ignore: ['toaster'] }],
+    },
     settings: {
       'better-tailwindcss': {
         entryPoint: './app/assets/css/index.css',
       },
-    },
-  })
-  .overrideRules({
-    rules: {
-      'better-tailwindcss/consistent-line-wrapping': 'off',
     },
   })

@@ -16,8 +16,17 @@ export default defineNuxtConfig({
     'motion-v/nuxt',
   ],
 
-  devtools: { enabled: true },
+  imports: {
+    presets: [
+      {
+        from: 'vue-sonner',
+        imports: ['toast'],
 
+      },
+    ],
+  },
+
+  devtools: { enabled: true },
   
   app: {
     rootAttrs: {
@@ -31,6 +40,7 @@ export default defineNuxtConfig({
     '~/assets/css/tailwind.css',
     '~/assets/css/app.css',
     '~/assets/css/index.css',
+    'vue-sonner/style.css',
   ],
 
   site: {

@@ -41,6 +41,7 @@ useHead({
     <UiTooltipProvider>
       <NuxtLayout>
         <NuxtPage />
+        <UiToaster position="top-center" />
       </NuxtLayout>
     </UiTooltipProvider>
 
