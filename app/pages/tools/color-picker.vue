@@ -28,7 +28,7 @@ const currentFile = computed(() => files.value?.[0])
   >
     <AppToolsColorPicker />
 
-    <div class="flex h-full flex-col gap-2">
+    <div class="flex h-full min-h-96 flex-col gap-2">
 
       <div class="relative size-full">
 
