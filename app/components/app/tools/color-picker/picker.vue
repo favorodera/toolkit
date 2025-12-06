@@ -9,6 +9,14 @@ const lightness = ref(50)
   
 const colorFormats = ref(['hex', 'hsl', 'rgb'] as const)
 const colorFormatModel = ref<typeof colorFormats.value[number]>('hex')
+
+const inputPlaceholder = computed(() => {
+  switch (colorFormatModel.value) {
+    case 'rgb': return 'rgb(255, 255, 255)'
+    case 'hsl': return 'hsl(0, 100%, 50%)'
+    default: return '#000000'
+  }
+})
   
 const colorAreaRef = useTemplateRef('colorArea')
 const hueSliderRef = useTemplateRef('hueSlider')
@@ -336,6 +344,7 @@ watch(eyedropper.sRGBHex, (hexValue) => {
           <div class="flex items-center gap-2">
             <UiInput
               v-model="inputsValue"
+              :placeholder="inputPlaceholder"
               class="flex-1"
             />
             <UiSelect v-model="colorFormatModel">
