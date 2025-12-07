@@ -263,6 +263,12 @@ const copy = async (key: string | number, text: string) => {
 watch(eyedropper.sRGBHex, (hexValue) => {
   if (hexValue.trim()) hexToHsl(hexValue)
 })
+
+defineExpose({
+  setColorFromHex(hex: string) {
+    hexToHsl(hex)
+  },
+})
 </script>
   
 <template>
@@ -375,7 +381,10 @@ watch(eyedropper.sRGBHex, (hexValue) => {
 
           <UiButton
             variant="outline"
-            class="w-full"
+            class="
+              w-full
+              max-md:hidden
+            "
             :disabled="!eyedropper.isSupported"
             @click="eyedropper.open"
           >
@@ -442,6 +451,8 @@ watch(eyedropper.sRGBHex, (hexValue) => {
           </div>
           
         </div>
+
+        <slot />
 
       </div>
 
