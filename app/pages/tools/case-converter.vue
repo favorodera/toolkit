@@ -7,7 +7,12 @@ definePageMeta({
 })
 
 useSeoMeta({
-  title: 'Text Case Converter',
+  title: () => toolsRegistry['caseConverter'].name,
+  description: () => toolsRegistry['caseConverter'].description,
+  ogTitle: () => toolsRegistry['caseConverter'].name,
+  ogDescription: () => toolsRegistry['caseConverter'].description,
+  twitterTitle: () => toolsRegistry['caseConverter'].name,
+  twitterDescription: () => toolsRegistry['caseConverter'].description,
 })
 
 const mainCaseTypes = ref<ChangeCaseType[]>([
