@@ -15,14 +15,18 @@
   --header-height: calc(var(--spacing) * 14);
 }
 
-
 @utility scrollbar-thin {
   scrollbar-width: thin;
 }
 
-/* #app {
-  @apply relative flex min-h-svh flex-col px-2 pb-2 sm:px-4 sm:pb-4
-} */
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 
 ::-ms-reveal {
   display: none;
