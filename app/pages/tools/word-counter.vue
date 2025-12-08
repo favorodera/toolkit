@@ -7,7 +7,12 @@ definePageMeta({
 })
 
 useSeoMeta({
-  title: 'Word Counter',
+  title: () => toolsRegistry['wordCounter'].name,
+  description: () => toolsRegistry['wordCounter'].description,
+  ogTitle: () => toolsRegistry['wordCounter'].name,
+  ogDescription: () => toolsRegistry['wordCounter'].description,
+  twitterTitle: () => toolsRegistry['wordCounter'].name,
+  twitterDescription: () => toolsRegistry['wordCounter'].description,
 })
 
 const input = ref('')
