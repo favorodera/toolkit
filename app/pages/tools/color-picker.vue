@@ -5,7 +5,12 @@ definePageMeta({
 })
 
 useSeoMeta({
-  title: 'Color Picker',
+  title: () => toolsRegistry['colorPicker'].name,
+  description: () => toolsRegistry['colorPicker'].description,
+  ogTitle: () => toolsRegistry['colorPicker'].name,
+  ogDescription: () => toolsRegistry['colorPicker'].description,
+  twitterTitle: () => toolsRegistry['colorPicker'].name,
+  twitterDescription: () => toolsRegistry['colorPicker'].description,
 })
 
 const maxSizeMB = ref(200)
@@ -19,48 +24,10 @@ const { files, errors, openFileDialog, removeFile, dropzoneRef, inputRef } = use
 const currentFile = computed(() => files.value?.[0])
 const colorPickerRef = useTemplateRef('colorPickerRef')
 const imageRef = useTemplateRef('imageRef')
-const colorsContainerRef = useTemplateRef('colorsContainer')
 
 const isExtracting = ref(false)
 const extractedColors = ref<string[]>([])
 
-const lastDistanceX = ref(0)
-
-const { distanceX } = usePointerSwipe(colorsContainerRef, {
-  onSwipe() {
-    if (!colorsContainerRef.value) return
-
-    const container = colorsContainerRef.value
-
-    const delta = distanceX.value - lastDistanceX.value
-    lastDistanceX.value = distanceX.value
-
-
-    container.scrollBy({
-      left: delta * 1.0,
-      behavior: 'instant',
-    })
-  },
-
-  onSwipeEnd() {
-    if (!colorsContainerRef.value) return
-
-    const container = colorsContainerRef.value
-    const velocity = Math.abs(distanceX.value)
-
-    lastDistanceX.value = 0
-
-    if (velocity > 50) {
-      const momentum = distanceX.value * 0.8
-      container.scrollBy({
-        left: momentum,
-        behavior: 'smooth',
-      })
-    }
-  },
-
-  threshold: 5,
-})
 
 function extractColorsFromImage() {
   if (!imageRef.value || !currentFile.value) return
@@ -106,11 +73,19 @@ function extractColorsFromImage() {
 
     const quantize = 16
 
-    const quantizeRed = Math.round(red / quantize) * quantize
-    const quantizeGreen = Math.round(green / quantize) * quantize
-    const quantizeBlue = Math.round(blue / quantize) * quantize
+    const quantizeRed = Math
+      .min(255, Math.max(0, Math.round(red / quantize) * quantize))
+      .toString(16).padStart(2, '0')
 
-    const hex = `#${[quantizeRed, quantizeGreen, quantizeBlue].map(c => c.toString(16).padStart(2, '0')).join('')}`
+    const quantizeGreen = Math
+      .min(255, Math.max(0, Math.round(green / quantize) * quantize))
+      .toString(16).padStart(2, '0')
+
+    const quantizeBlue = Math
+      .min(255, Math.max(0, Math.round(blue / quantize) * quantize))
+      .toString(16).padStart(2, '0')
+
+    const hex = `#${quantizeRed}${quantizeGreen}${quantizeBlue}`
 
     colorMap.set(hex, (colorMap.get(hex) || 0) + 1)
   }
@@ -136,13 +111,6 @@ watch(currentFile, async (newFile) => {
     extractedColors.value = []
   }
 })
-
-function selectColor(hex: string) {
-  if (colorPickerRef.value?.setColorFromHex) {
-    colorPickerRef.value.setColorFromHex(hex)
-  }
-}
-
 </script>
 
 <template>
@@ -160,23 +128,24 @@ function selectColor(hex: string) {
       >
 
         <div
-          ref="colorsContainer"
-          class="flex flex-1 gap-2 overflow-hidden scroll-smooth"
+          class="
+            scrollbar-hide flex flex-1 snap-x snap-mandatory gap-2
+            overflow-x-auto overflow-y-hidden scroll-smooth
+          "
         >
           <button
             v-for="(color, index) in extractedColors"
             :key="index"
             :style="{ backgroundColor: color }"
             class="
-              size-10 shrink-0 cursor-pointer rounded-md border border-border
-              transition-transform
+              relative size-10 shrink-0 cursor-pointer rounded-md border
+              border-border transition-transform
               hover:scale-110
               focus-visible:ring-2 focus-visible:ring-ring
             "
             :aria-label="`Select color ${color}`"
-            @click="selectColor(color)"
+            @click="colorPickerRef?.hexToHsl(color)"
           />
-
 
         </div>
 
@@ -223,9 +192,10 @@ function selectColor(hex: string) {
           @click="openFileDialog"
         >
           <input
+            id="color-picker-file"
             ref="inputRef"
             hidden
-            aria-label="Upload file"
+            aria-label="Upload image"
           >
 
           <div
