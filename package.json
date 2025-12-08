@@ -17,6 +17,7 @@
     "@nuxtjs/color-mode": "4.0.0",
     "@nuxtjs/seo": "3.2.2",
     "@tailwindcss/vite": "^4.1.17",
+    "@vee-validate/zod": "^4.15.1",
     "@vueuse/core": "^14.1.0",
     "@vueuse/integrations": "^14.1.0",
     "@vueuse/nuxt": "14.1.0",
@@ -27,13 +28,16 @@
     "maska": "^3.2.0",
     "motion-v": "^1.7.4",
     "nuxt": "^4.2.1",
+    "qrcode": "^1.5.4",
     "reka-ui": "^2.6.1",
     "shadcn-nuxt": "2.4.1",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.17",
+    "vee-validate": "^4.15.1",
     "vue": "^3.5.25",
     "vue-router": "^4.6.3",
-    "vue-sonner": "^2.0.9"
+    "vue-sonner": "^2.0.9",
+    "zod": "^4.1.13"
   },
   "devDependencies": {
     "@favorodera/nuxt-eslint-config": "^1.1.0",

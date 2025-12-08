@@ -13,7 +13,7 @@
 
     </AppHero>
 
-    <AppToolsGrid :registry="toolsRegistry.slice(0, 6)" />
+    <AppToolsGrid :registry="Object.fromEntries(Object.entries(toolsRegistry).slice(-6))" />
 
   </div>
 

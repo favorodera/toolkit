@@ -60,7 +60,7 @@ const output = computed(() => {
 </script>
 
 <template>
-  <div class="@container relative grid">
+  <section class="@container relative grid">
 
     <div
       class="
@@ -178,5 +178,5 @@ const output = computed(() => {
 
     </UiDialog>
 
-  </div>
+  </section>
 </template>
