@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const eyedropper = useEyeDropper()
-  
+
 const copiedKey = ref<string | number | null>(null)
   
 const hue = ref(0)
@@ -265,9 +265,7 @@ watch(eyedropper.sRGBHex, (hexValue) => {
 })
 
 defineExpose({
-  setColorFromHex(hex: string) {
-    hexToHsl(hex)
-  },
+  hexToHsl,
 })
 </script>
   
@@ -348,12 +346,19 @@ defineExpose({
           </div>
 
           <div class="flex items-center gap-2">
+
             <UiInput
+              id="color-input"
               v-model="inputsValue"
               :placeholder="inputPlaceholder"
               class="flex-1"
             />
-            <UiSelect v-model="colorFormatModel">
+
+            <UiSelect
+              id="color-format"
+              v-model="colorFormatModel"
+            >
+
               <UiSelectTrigger
                 size="sm"
                 class="w-24 cursor-pointer"
@@ -439,12 +444,11 @@ defineExpose({
               "
               tabindex="0"
             >
-              <div
-                tabindex="0"
+              <p
                 class="text-center font-mono text-sm text-muted-foreground"
               >
                 MORE COMING...
-              </div>
+              </p>
 
             </div>
 
