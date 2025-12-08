@@ -8,10 +8,10 @@ useSeoMeta({
   twitterTitle: '%s',
   twitterSite: '@favorodera',
   twitterCard: 'summary_large_image',
-  ogImage: '/logo.png',
+  ogImage: '/logo.svg',
   ogImageAlt: 'Toolkit',
   twitterImageAlt: 'Toolkit',
-  twitterImage: '/logo.png',
+  twitterImage: '/logo.svg',
 })
 
 useHead({
