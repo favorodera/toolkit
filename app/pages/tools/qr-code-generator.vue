@@ -16,7 +16,7 @@ useSeoMeta({
   twitterDescription: () => toolsRegistry['qrCodeGenerator'].description,
 })
 
-const qrCodeData = useState('qr-code-data', () => ' ')
+const qrCodeData = useState('qr-code-data', () => '')
   
 const dataTypes = [
   { type: 'url', icon: 'lucide:link-2' },
@@ -45,9 +45,14 @@ const errorCorrectionLevels = ref([
   { label: 'High (≈30%)', value: 'H' },
 
 ])
-const errorCorrectionLevel = ref('H')
 
-const qrCode = useQRCode(qrCodeData)
+const settings = ref({
+  errorCorrectionLevel: 'H',
+  margin: [3],
+  width: [256],
+})
+
+const qrCode = computed(() => useQRCode(qrCodeData, { ...settings.value }))
   
 </script>
   
@@ -178,7 +183,7 @@ const qrCode = useQRCode(qrCodeData)
 
           <UiDrawerTrigger
             as-child
-            class="absolute right-8 bottom-8 z-1"
+            class="absolute right-8 bottom-14 z-1"
           >
             <UiButton
               variant="secondary"
@@ -191,7 +196,7 @@ const qrCode = useQRCode(qrCodeData)
 
           <UiDrawerContent>
 
-            <div class="mx-auto w-full max-w-sm">
+            <div class="mx-auto w-full max-w-md">
 
               <UiDrawerHeader>
                 <UiDrawerTitle>Preview QR Code</UiDrawerTitle>
@@ -199,35 +204,81 @@ const qrCode = useQRCode(qrCodeData)
             
               <div class="flex flex-col gap-4 p-4">
 
-                <div class="rounded-md border border-border p-4">
+                <div
+                  class="
+                    grid aspect-square w-full place-items-center rounded-md
+                    border border-border p-4
+                  "
+                >
 
                   <NuxtImg
-                    :src="qrCode"
+                    :src="qrCode.value"
                     fit="cover"
-                    class="size-full"
+                    class="aspect-square max-w-full"
+                    :style="{ width: settings.width }"
                   />
 
                 </div>
-                
-                <UiSelect
-                  v-model:model-value="errorCorrectionLevel"
+
+                <form
+                  id="qr-code-settings"
+                  class="contents"
                 >
-
-                  <UiSelectTrigger class="w-full">
-                    <UiSelectValue />
-                  </UiSelectTrigger>
-
-                  <UiSelectContent>
-                    <UiSelectItem
-                      v-for="level in errorCorrectionLevels"
-                      :key="level.value"
-                      :value="level.value"
+                  <UiField>
+                    <UiFieldLabel for="error-correction-level">
+                      Error Correction Level
+                    </UiFieldLabel>
+                    <UiSelect
+                      id="error-correction-level"
+                      v-model:model-value="settings.errorCorrectionLevel"
                     >
-                      {{ level.label }}
-                    </UiSelectItem>
-                  </UiSelectContent>
 
-                </UiSelect>
+                      <UiSelectTrigger class="w-full">
+                        <UiSelectValue />
+                      </UiSelectTrigger>
+
+                      <UiSelectContent>
+                        <UiSelectItem
+                          v-for="level in errorCorrectionLevels"
+                          :key="level.value"
+                          :value="level.value"
+                        >
+                          {{ level.label }}
+                        </UiSelectItem>
+                      </UiSelectContent>
+
+                    </UiSelect>
+
+                  </UiField>
+
+                  <UiField>
+                    <UiFieldLabel for="margin">
+                      Margin
+                    </UiFieldLabel>
+
+                    <UiSlider
+                      id="margin"
+                      v-model="settings.margin"
+                      :min="1"
+                      :max="16"
+                    />
+                  </UiField>
+
+                  <UiField>
+                    <UiFieldLabel for="width">
+                      Width
+                    </UiFieldLabel>
+
+                    <UiSlider
+                      id="width"
+                      v-model="settings.width"
+                      :min="1"
+                      :max="1024"
+                    />
+                  </UiField>
+
+                </form>
+               
               </div>
 
             </div>
