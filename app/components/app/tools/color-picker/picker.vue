@@ -280,7 +280,6 @@ defineExpose({
           md:grid-cols-2
         "
       >
-        <!-- Left Column: Color Picker -->
         <div class="flex flex-col gap-4">
           <div
             ref="colorArea"
@@ -400,12 +399,10 @@ defineExpose({
             
         </div>
 
-        <!-- Right Column: Color Preview & Info -->
         <div class="flex flex-col gap-4">
 
           <div
             :style="{ backgroundColor: currentHsl }"
-            tabindex="0"
             aria-label="Current selected color preview"
             class="h-32 w-full rounded-md border border-border transition-all"
           />
@@ -442,7 +439,6 @@ defineExpose({
               class="
                 grid place-items-center rounded-md border border-border p-3
               "
-              tabindex="0"
             >
               <p
                 class="text-center font-mono text-sm text-muted-foreground"
