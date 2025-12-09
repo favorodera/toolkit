@@ -35,10 +35,20 @@ const copiedKey = ref<string | number | null>(null)
 
 const output = computed(() => {
   const results = new Map<string, string>()
+  const text = input.value.trim()
+  const defaultResult = 'Enter text to convert'
+  const displayText = text || defaultResult
 
   mainCaseTypes.value.forEach((type) => {
-    results.set(useChangeCase(type, type).value, useChangeCase(input.value.trim() || 'Enter text to convert', type).value)
+    results.set(
+      useChangeCase(type, type).value,
+      useChangeCase(displayText, type).value,
+    )
   })
+
+  // Extra conversions
+  results.set('lowercase', displayText.toLowerCase())
+  results.set('UPPERCASE', displayText.toUpperCase())
 
   return Object.fromEntries(results.entries())
 })
@@ -103,6 +113,7 @@ const copy = async (key: string | number, text: string) => {
               @click="copy(key, result)"
             >
               <Icon :name="copiedKey === key ? 'lucide:copy-check' : 'lucide:copy'" />
+              <span class="sr-only">Copy</span>
             </UiButton>
           </UiItemActions>
 
