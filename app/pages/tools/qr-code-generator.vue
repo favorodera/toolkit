@@ -28,6 +28,8 @@ const dataTypes = [
   { type: 'tel', icon: 'lucide:phone' },
   { type: 'calendar', icon: 'lucide:calendar' },
 ]
+
+const dataType = ref<typeof dataTypes[number]['type']>('url')
   
 const dataTypeComponents = [
   LazyAppToolsQrCodeGeneratorUrl,
@@ -52,39 +54,119 @@ const qrCode = useQRCode(qrCodeData)
 <template>
   
   <section
-    class="@container relative"
+    class="relative"
   >
   
     <UiTabs
-      default-value="url"
-      :unmount-on-hide="false"
+      v-model="dataType"
+      class="h-[calc(100dvh-14rem)]"
     >
-  
+
       <UiTabsList
         class="
           w-full
-          *:cursor-pointer
+          **:cursor-pointer
         "
       >
-  
-        <UiTabsTrigger
-          v-for="dataType, index in dataTypes"
-          :key="index"
-          :value="dataType.type"
+
+        <div
+          class="
+            contents
+            sm:hidden
+          "
         >
-          <Icon :name="dataType.icon" />
-          {{ dataType.type.toLocaleUpperCase() }}
-        </UiTabsTrigger>
-  
+          <UiTabsTrigger
+            v-for="trigger in dataTypes.slice(0, 2)"
+            :key="trigger.type"
+            :value="trigger.type"
+          >
+            <Icon
+              :name="trigger.icon"
+            />
+            {{ trigger.type.toUpperCase() }}
+          </UiTabsTrigger>
+
+          <AppToolsQrCodeGeneratorMobileTabList
+            v-model="dataType"
+            :data-types="dataTypes.slice(2)"
+          />
+        </div>
+
+        <div
+          class="
+            hidden
+            sm:contents
+            md:hidden
+          "
+        >
+          <UiTabsTrigger
+            v-for="trigger in dataTypes.slice(0, 4)"
+            :key="trigger.type"
+            :value="trigger.type"
+          >
+            <Icon
+              :name="trigger.icon"
+            />
+            {{ trigger.type.toUpperCase() }}
+          </UiTabsTrigger>
+
+          <AppToolsQrCodeGeneratorMobileTabList
+            v-model="dataType"
+            :data-types="dataTypes.slice(4)"
+          />
+        </div>
+
+        <div
+          class="
+            hidden
+            md:contents
+            lg:hidden
+          "
+        >
+          <UiTabsTrigger
+            v-for="trigger in dataTypes.slice(0, 5)"
+            :key="trigger.type"
+            :value="trigger.type"
+          >
+            <Icon
+              :name="trigger.icon"
+            />
+            {{ trigger.type.toUpperCase() }}
+          </UiTabsTrigger>
+
+          <AppToolsQrCodeGeneratorMobileTabList
+            v-model="dataType"
+            :data-types="dataTypes.slice(5)"
+          />
+        </div>
+
+        <div
+          class="
+            hidden
+            lg:contents
+          "
+        >
+          <UiTabsTrigger
+            v-for="trigger in dataTypes"
+            :key="trigger.type"
+            :value="trigger.type"
+          >
+            <Icon
+              :name="trigger.icon"
+            />
+            {{ trigger.type.toUpperCase() }}
+          </UiTabsTrigger>
+        </div>
+
       </UiTabsList>
   
       <UiTabsContent
-        v-for="dataType, index in dataTypes"
+        v-for="content, index in dataTypes"
         :key="index"
-        :value="dataType.type"
+        :value="content.type"
         class="
-          relative flex max-h-[calc(100dvh-20rem)] min-h-[calc(100dvh-20rem)]
-          flex-col gap-4 rounded-md border border-border p-4
+          relative flex max-h-[calc(100dvh-14rem)] flex-1 flex-col gap-4
+          rounded-md border border-border p-4
         "
       >
 
@@ -96,10 +178,10 @@ const qrCode = useQRCode(qrCodeData)
 
           <UiDrawerTrigger
             as-child
-            class="absolute right-4 bottom-4 z-1"
+            class="absolute right-8 bottom-8 z-1"
           >
             <UiButton
-              variant="outline"
+              variant="secondary"
               size="icon-lg"
             >
               <Icon name="lucide:qr-code" />
