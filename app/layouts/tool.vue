@@ -35,6 +35,7 @@ const toolName = computed(() => route.meta.toolName ?? '')
                 name="lucide:chevron-left"
                 class="size-5"
               />
+              <span class="sr-only">Back</span>
             </NuxtLink>
           </UiButton>
 
