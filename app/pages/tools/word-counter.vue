@@ -108,27 +108,19 @@ const output = computed(() => {
 
     <UiDialog>
 
-      <UiDialogTrigger v-if="output.words">
+      <UiDialogTrigger
+        v-if="output.words"
+        as-child
+      >
           
-        <UiTooltip>
-
-          <UiTooltipTrigger as-child>
-
-            <UiButton
-              size="icon"
-              class="absolute right-4 bottom-4"
-              variant="outline"
-            >
-              <Icon name="lucide:chart-no-axes-column-increasing" />
-            </UiButton>
-
-          </UiTooltipTrigger>
-            
-          <UiTooltipContent>
-            <p>Top 10 words</p>
-          </UiTooltipContent>
-
-        </UiTooltip>
+        <UiButton
+          size="icon"
+          class="absolute right-4 bottom-4"
+          variant="outline"
+        >
+          <Icon name="lucide:chart-no-axes-column-increasing" />
+          <span class="sr-only">Top 10 words</span>
+        </UiButton>
 
       </UiDialogTrigger>
 
