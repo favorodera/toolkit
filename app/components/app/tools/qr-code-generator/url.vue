@@ -4,7 +4,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 
 const schema = toTypedSchema(z.object({
-  url: z.url('Invalid URL'),
+  url: z.url('Invalid URL format').max(500, 'URL is too long'),
 }))
 
 const { errors: formErrors } = useForm({
@@ -14,6 +14,20 @@ const { errors: formErrors } = useForm({
 const qrCodeData = useState('qr-code-data')
 
 const inputModel = ref('')
+
+const limits = {
+  optimal: 100,
+  warning: 200,
+  maximum: 500,
+}
+
+const urlLength = computed(() => inputModel.value.length)
+
+const limitStatus = computed(() => {
+  if (urlLength.value <= limits.optimal) return 'optimal'
+  if (urlLength.value <= limits.warning) return 'warning'
+  return 'error'
+})
 
 watch([inputModel, formErrors], ([value, errors]) => {
   qrCodeData.value = Object.keys(errors).length ? ' ' : value
@@ -42,10 +56,23 @@ watch([inputModel, formErrors], ([value, errors]) => {
           :aria-invalid="!!errors.length"
         />
 
-        <UiFieldError
-          v-if="errors.length"
-          :errors="errors"
-        />
+        <div class="inline-flex flex-wrap items-center justify-between gap-4">
+          <UiFieldError
+            v-if="errors.length"
+            :errors="errors.slice(0, 1)"
+          />
+
+          <p
+            class="ml-auto text-sm font-normal"
+            :class="{
+              'text-green-500': limitStatus === 'optimal',
+              'text-yellow-500': limitStatus === 'warning',
+              'text-red-500': limitStatus === 'error',
+            }"
+          >
+            {{ urlLength }} / {{ limits.maximum }}
+          </p>
+        </div>
       </UiField>
 
     </VeeField>
