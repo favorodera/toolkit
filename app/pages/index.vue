@@ -8,7 +8,9 @@
     >
 
       <template #actions>
-        <UiButton><NuxtLink to="/tools">Explore Toolkit</NuxtLink></UiButton>
+        <UiButton as-child>
+          <NuxtLink to="/tools">Explore Toolkit</NuxtLink>
+        </UiButton>
       </template>
 
     </AppHero>
