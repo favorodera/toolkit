@@ -19,7 +19,7 @@
   scrollbar-width: thin;
 }
 
-@utility scrollbar-hide {
+@utility scrollbar-hidden {
   -ms-overflow-style: none;
   scrollbar-width: none;
 

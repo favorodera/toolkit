@@ -129,7 +129,7 @@ watch(currentFile, async (newFile) => {
 
         <div
           class="
-            scrollbar-hide flex flex-1 snap-x snap-mandatory gap-2
+            scrollbar-hidden flex flex-1 snap-x snap-mandatory gap-2
             overflow-x-auto overflow-y-hidden scroll-smooth
           "
         >

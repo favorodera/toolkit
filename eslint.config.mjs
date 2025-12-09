@@ -15,7 +15,7 @@ export default withNuxt()
     rules: {
       ...betterTailwind.configs['recommended-warn'].rules,
       'better-tailwindcss/consistent-line-wrapping': 'off',
-      'better-tailwindcss/no-unregistered-classes': ['warn', { ignore: ['toaster', 'scrollbar-hide'] }],
+      'better-tailwindcss/no-unregistered-classes': ['warn', { ignore: ['toaster', 'scrollbar-hidden'] }],
     },
     settings: {
       'better-tailwindcss': {
