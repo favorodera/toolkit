@@ -185,6 +185,7 @@ const qrCode = useQRCode(qrCodeData)
               size="icon-lg"
             >
               <Icon name="lucide:qr-code" />
+              <span class="sr-only">Preview QR Code</span>
             </UiButton>
           </UiDrawerTrigger>
 
