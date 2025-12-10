@@ -54,6 +54,59 @@ const settings = ref({
 
 const qrCode = computed(() => useQRCode(qrCodeData, { ...settings.value }))
   
+
+function downloadQRCode(fileType: 'svg' | 'png') {
+  if (!qrCode.value.value) return
+
+  const dataUrl = qrCode.value.value
+  const filename = `qrcode-${dataType.value}-${Date.now()}.${fileType}`
+
+  switch (fileType) {
+    case 'png': {
+      const anchorElement = document.createElement('a')
+      anchorElement.href = dataUrl
+      anchorElement.download = filename
+      document.body.appendChild(anchorElement)
+      anchorElement.click()
+      document.body.removeChild(anchorElement)
+      break
+    }
+  
+    case 'svg': {
+      const image = new Image()
+
+      image.onload = () => {
+        const canvas = document.createElement('canvas')
+        canvas.width = settings.value.width[0]!
+        canvas.height = settings.value.width[0]!
+
+        const context = canvas.getContext('2d')
+        if (!context) return
+
+        context.drawImage(image, 0, 0)
+
+        const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="${canvas.width}" height="${canvas.height}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <image width="${canvas.width}" height="${canvas.height}" xlink:href="${dataUrl}"/>
+</svg>`
+
+        const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' })
+        const objectUrl = URL.createObjectURL(blob)
+
+        const anchorElement = document.createElement('a')
+        anchorElement.href = objectUrl
+        anchorElement.download = filename
+        document.body.appendChild(anchorElement)
+        anchorElement.click()
+        document.body.removeChild(anchorElement)
+        URL.revokeObjectURL(objectUrl)
+      }
+
+      image.src = dataUrl
+      break
+    }
+  }
+}
 </script>
   
 <template>
@@ -64,7 +117,7 @@ const qrCode = computed(() => useQRCode(qrCodeData, { ...settings.value }))
   
     <UiTabs
       v-model="dataType"
-      class="h-[calc(100dvh-14rem)]"
+      class="h-[calc(100dvh-16rem)]"
     >
 
       <UiTabsList
@@ -179,9 +232,9 @@ const qrCode = computed(() => useQRCode(qrCodeData, { ...settings.value }))
           <component :is="dataTypeComponents[index]" />
         </KeepAlive>
 
-        <UiDrawer>
+        <UiDialog>
 
-          <UiDrawerTrigger
+          <UiDialogTrigger
             as-child
             class="absolute right-8 bottom-14 z-1"
           >
@@ -192,100 +245,161 @@ const qrCode = computed(() => useQRCode(qrCodeData, { ...settings.value }))
               <Icon name="lucide:qr-code" />
               <span class="sr-only">Preview QR Code</span>
             </UiButton>
-          </UiDrawerTrigger>
+          </UiDialogTrigger>
 
-          <UiDrawerContent>
+          <UiDialogContent>
 
-            <div class="mx-auto w-full max-w-md">
 
-              <UiDrawerHeader>
-                <UiDrawerTitle>Preview QR Code</UiDrawerTitle>
-              </UiDrawerHeader>
-            
-              <div class="flex flex-col gap-4 p-4">
+            <UiDialogHeader>
+              <UiDialogTitle>Preview QR Code</UiDialogTitle>
+              <UiDialogDescription>Preview and customize generated QR Code</UiDialogDescription>
+            </UiDialogHeader>
 
-                <div
-                  class="
-                    grid aspect-square w-full place-items-center rounded-md
-                    border border-border p-4
-                  "
-                >
+            <div
+              class="
+                grid aspect-square w-full place-items-center rounded-md border
+                border-border p-4
+              "
+            >
 
-                  <NuxtImg
-                    :src="qrCode.value"
-                    fit="cover"
-                    class="aspect-square max-w-full"
-                    :style="{ width: settings.width }"
-                  />
-
-                </div>
-
-                <form
-                  id="qr-code-settings"
-                  class="contents"
-                >
-                  <UiField>
-                    <UiFieldLabel for="error-correction-level">
-                      Error Correction Level
-                    </UiFieldLabel>
-                    <UiSelect
-                      id="error-correction-level"
-                      v-model:model-value="settings.errorCorrectionLevel"
-                    >
-
-                      <UiSelectTrigger class="w-full">
-                        <UiSelectValue />
-                      </UiSelectTrigger>
-
-                      <UiSelectContent>
-                        <UiSelectItem
-                          v-for="level in errorCorrectionLevels"
-                          :key="level.value"
-                          :value="level.value"
-                        >
-                          {{ level.label }}
-                        </UiSelectItem>
-                      </UiSelectContent>
-
-                    </UiSelect>
-
-                  </UiField>
-
-                  <UiField>
-                    <UiFieldLabel for="margin">
-                      Margin
-                    </UiFieldLabel>
-
-                    <UiSlider
-                      id="margin"
-                      v-model="settings.margin"
-                      :min="1"
-                      :max="16"
-                    />
-                  </UiField>
-
-                  <UiField>
-                    <UiFieldLabel for="width">
-                      Width
-                    </UiFieldLabel>
-
-                    <UiSlider
-                      id="width"
-                      v-model="settings.width"
-                      :min="1"
-                      :max="1024"
-                    />
-                  </UiField>
-
-                </form>
-               
-              </div>
+              <NuxtImg
+                :src="qrCode.value"
+                fit="cover"
+                class="aspect-square max-w-full"
+                :style="{ width: settings.width }"
+              />
 
             </div>
-           
-          </UiDrawerContent>
 
-        </UiDrawer>
+            <UiButtonGroup
+              class="w-full"
+              aria-label="Download QR Code"
+            >
+              
+
+              <UiTooltip>
+
+                <UiTooltipTrigger as-child>
+                  <UiButton
+                    variant="secondary"
+                    size="sm"
+                    class="flex-1"
+                    @click.prevent="downloadQRCode('png')"
+                  >
+                    <Icon name="lucide:image" />
+                    PNG
+                  </UiButton>
+                </UiTooltipTrigger>
+
+                <UiTooltipContent>
+                  Download as PNG
+                </UiTooltipContent>
+
+              </UiTooltip>
+              
+              <UiButtonGroupSeparator class="shrink-0" />
+
+              <UiTooltip>
+
+                <UiTooltipTrigger as-child>
+                  <UiButton
+                    variant="secondary"
+                    size="sm"
+                    class="flex-1"
+                    @click.prevent="downloadQRCode('svg')"
+                  >
+                    <Icon name="lucide:file-code" />
+                    SVG
+                  </UiButton>
+                </UiTooltipTrigger>
+
+                <UiTooltipContent>
+                  Download as SVG
+                </UiTooltipContent>
+
+              </UiTooltip>
+              
+            </UiButtonGroup>
+            
+            <form
+              id="qr-code-settings"
+              class="
+                grid flex-1 auto-rows-min grid-rows-[auto_auto_1fr] gap-4
+                md:grid-cols-2
+              "
+            >
+              <UiField>
+
+                <UiFieldContent>
+
+                  <UiFieldLabel for="error-correction-level">
+                    Error Correction Level
+                  </UiFieldLabel>
+
+                  <UiSelect
+                    id="error-correction-level"
+                    v-model:model-value="settings.errorCorrectionLevel"
+                  >
+
+                    <UiSelectTrigger class="w-full">
+                      <UiSelectValue />
+                    </UiSelectTrigger>
+
+                    <UiSelectContent>
+                      <UiSelectItem
+                        v-for="level in errorCorrectionLevels"
+                        :key="level.value"
+                        :value="level.value"
+                      >
+                        {{ level.label }}
+                      </UiSelectItem>
+                    </UiSelectContent>
+
+                  </UiSelect>
+
+                </UiFieldContent>
+
+              </UiField>
+
+              <UiField>
+                <UiFieldContent>
+
+                  <UiFieldLabel for="margin">
+                    Margin
+                  </UiFieldLabel>
+
+                  <UiSlider
+                    id="margin"
+                    v-model="settings.margin"
+                    :min="1"
+                    :max="16"
+                  />
+
+                </UiFieldContent>
+              </UiField>
+
+              <UiField>
+                <UiFieldContent>
+
+                  <UiFieldLabel for="width">
+                    Width
+                  </UiFieldLabel>
+
+                  <UiSlider
+                    id="width"
+                    v-model="settings.width"
+                    :min="1"
+                    :max="1024"
+                  />
+
+                </UiFieldContent>
+              </UiField>
+
+            </form>
+               
+          </UiDialogContent>
+
+        </UiDialog>
         
       </UiTabsContent>
   
