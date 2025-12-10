@@ -22,6 +22,7 @@ watch([formErrors, formValues], ([errors, values]) => {
 
   if (Object.keys(errors).length || !url) {
     qrCodeData.value = undefined
+    return
   } else {
     qrCodeData.value = url
   }

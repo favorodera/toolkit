@@ -22,6 +22,34 @@ const qrCodeData = useState('qr-code-data')
   
 const state = reactive<Partial<z.output<typeof schema>>>({})
 
+watch([formErrors, formValues], ([errors, values]) => {
+  const { firstName, lastName, title, email, phoneNumber, address, website, organization } = values
+
+  if (Object.keys(errors).length || !firstName) {
+    qrCodeData.value = undefined
+    return
+  }
+
+  const parts: string[] = []
+  
+  const name = `N:${lastName ?? ''};${firstName ?? ''};;;`
+  parts.push(name)
+  
+  if (firstName || lastName) {
+    const fullName = `FN:${[firstName, lastName].filter(Boolean).join(' ')}`
+    parts.push(fullName)
+  }
+  
+  if (title) parts.push(`TITLE:${title}`)
+  if (organization) parts.push(`ORG:${organization}`)
+  if (email) parts.push(`EMAIL:${email}`)
+  if (phoneNumber) parts.push(`TEL:${phoneNumber}`)
+  if (address) parts.push(`ADR:;;${address};;;;`)
+  if (website) parts.push(`URL:${website}`)
+
+  qrCodeData.value = `BEGIN:VCARD\nVERSION:3.0\n${parts.join('\n')}\nEND:VCARD`
+})
+
 </script>
 
 <template>

@@ -39,6 +39,7 @@ watch([formValues, formErrors], ([values, errors]) => {
 
   if (Object.keys(errors).length || !receiver) {
     qrCodeData.value = undefined
+    return
   } else {
     const params = []
     

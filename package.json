@@ -8,6 +8,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "dev:hot":"nuxt cleanup && nuxt prepare && nuxt dev",
     "lint": "eslint . --fix"
   },
   "dependencies": {
@@ -17,6 +18,7 @@
     "@nuxtjs/color-mode": "4.0.0",
     "@nuxtjs/seo": "3.2.2",
     "@tailwindcss/vite": "^4.1.17",
+    "@vaxee/nuxt": "^0.12.1",
     "@vee-validate/zod": "^4.15.1",
     "@vueuse/core": "^14.1.0",
     "@vueuse/integrations": "^14.1.0",
@@ -34,6 +36,7 @@
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.17",
     "vaul-vue": "^0.4.1",
+    "vaxee": "^0.12.1",
     "vee-validate": "^4.15.1",
     "vue": "^3.5.25",
     "vue-router": "^4.6.3",

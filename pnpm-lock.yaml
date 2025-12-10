@@ -26,6 +26,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.1.17
         version: 4.1.17(vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
+      '@vaxee/nuxt':
+        specifier: ^0.12.1
+        version: 0.12.1(magicast@0.5.1)(vue@3.5.25(typescript@5.9.3))
       '@vee-validate/zod':
         specifier: ^4.15.1
         version: 4.15.1(vue@3.5.25(typescript@5.9.3))(zod@4.1.13)
@@ -77,6 +80,9 @@ importers:
       vaul-vue:
         specifier: ^0.4.1
         version: 0.4.1(reka-ui@2.6.1(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
+      vaxee:
+        specifier: ^0.12.1
+        version: 0.12.1(vue@3.5.25(typescript@5.9.3))
       vee-validate:
         specifier: ^4.15.1
         version: 4.15.1(vue@3.5.25(typescript@5.9.3))
@@ -2244,6 +2250,11 @@ packages:
     resolution: {integrity: sha512-lrW200hZdbfRtztbygyaq/6jP6AKE8qQN2KvPcJ+x7wiD038YtnYtZ82IMNJ69GJibV7bwL3y9FgK+5w/pYt6g==}
     cpu: [x64]
     os: [win32]
+
+  '@vaxee/nuxt@0.12.1':
+    resolution: {integrity: sha512-AZbnTnLeERNfG18dKUB8r9KU7FVDS1CGWWjwAYm1FkqnP8wGqSgrqR8CCPk1kc6M5TrGe9kyD0Fgp7ryL0OVuw==}
+    peerDependencies:
+      vue: '>3.0.0'
 
   '@vee-validate/zod@4.15.1':
     resolution: {integrity: sha512-329Z4TDBE5Vx0FdbA8S4eR9iGCFFUNGbxjpQ20ff5b5wGueScjocUIx9JHPa79LTG06RnlUR4XogQsjN4tecKA==}
@@ -5262,6 +5273,11 @@ packages:
       reka-ui: ^2.0.0
       vue: ^3.3.0
 
+  vaxee@0.12.1:
+    resolution: {integrity: sha512-Ea/wOCY4K44DN3ZakgYVS4/C7ZeTmefm2bbTuOFRqEMCWY37jfWbiQK4zuf9RApsHhbrIq1+djUGFXhwyFU97Q==}
+    peerDependencies:
+      vue: '>3.0.0'
+
   vee-validate@4.15.1:
     resolution: {integrity: sha512-DkFsiTwEKau8VIxyZBGdO6tOudD+QoUBPuHj3e6QFqmbfCRj1ArmYWue9lEp6jLSWBIw4XPlDLjFIZNLdRAMSg==}
     peerDependencies:
@@ -7786,6 +7802,14 @@ snapshots:
 
   '@unrs/resolver-binding-win32-x64-msvc@1.11.1':
     optional: true
+
+  '@vaxee/nuxt@0.12.1(magicast@0.5.1)(vue@3.5.25(typescript@5.9.3))':
+    dependencies:
+      '@nuxt/kit': 3.20.1(magicast@0.5.1)
+      vaxee: 0.12.1(vue@3.5.25(typescript@5.9.3))
+      vue: 3.5.25(typescript@5.9.3)
+    transitivePeerDependencies:
+      - magicast
 
   '@vee-validate/zod@4.15.1(vue@3.5.25(typescript@5.9.3))(zod@4.1.13)':
     dependencies:
@@ -11402,6 +11426,10 @@ snapshots:
       vue: 3.5.25(typescript@5.9.3)
     transitivePeerDependencies:
       - '@vue/composition-api'
+
+  vaxee@0.12.1(vue@3.5.25(typescript@5.9.3)):
+    dependencies:
+      vue: 3.5.25(typescript@5.9.3)
 
   vee-validate@4.15.1(vue@3.5.25(typescript@5.9.3)):
     dependencies:

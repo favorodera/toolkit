@@ -53,13 +53,13 @@ const settings = ref({
   width: [256],
 })
 
-const qrCode = computed(() => useQRCode(qrCodeData, { ...settings.value }))
+const qrCode = useQRCode(qrCodeData, { ...settings.value })
   
 
 function downloadQRCode(fileType: 'svg' | 'png') {
-  if (!qrCode.value.value) return
+  if (!qrCode.value) return
 
-  const dataUrl = qrCode.value.value
+  const dataUrl = qrCode.value
   const filename = `qrcode-${dataType.value}-${Date.now()}.${fileType}`
 
   switch (fileType) {
@@ -269,7 +269,7 @@ function downloadQRCode(fileType: 'svg' | 'png') {
         >
 
           <NuxtImg
-            :src="qrCode.value"
+            :src="qrCode"
             fit="cover"
             class="aspect-square max-w-full"
             :style="{ width: settings.width }"

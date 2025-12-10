@@ -20,6 +20,7 @@ watch([formValues, formErrors], ([values, errors]) => {
 
   if (Object.keys(errors).length || !text) {
     qrCodeData.value = undefined
+    return
   } else {
     qrCodeData.value = text
   }

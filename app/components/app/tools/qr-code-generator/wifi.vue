@@ -33,11 +33,20 @@ watch([formErrors, formValues], ([errors, values]) => {
 
   if (Object.keys(errors).length || !ssid || !authentication) {
     qrCodeData.value = undefined
-  } else {
-    const needsPassword = authentication !== 'nopass' && password
-    const passwordString = needsPassword ? `P:${password};` : ''
-    qrCodeData.value = `WIFI:T:${authentication};S:${ssid};${passwordString}${hidden ? 'H:true;' : ''};`
+    return
   }
+
+  const parts = [`T:${authentication}`, `S:${ssid}`]
+  
+  if (authentication !== 'nopass' && password) {
+    parts.push(`P:${password}`)
+  }
+  
+  if (hidden) {
+    parts.push('H:true')
+  }
+
+  qrCodeData.value = `WIFI:${parts.join(';')};;`
 })
 
 </script>
