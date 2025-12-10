@@ -46,7 +46,7 @@ watch([formErrors, formValues], ([errors, values]) => {
   <form
     id="qr-code-wifi-form"
     class="
-      grid flex-1 auto-rows-min grid-rows-[auto_auto_1fr] gap-4
+      grid flex-1 auto-rows-min grid-rows-[min-content] gap-4
       md:grid-cols-2
     "
   >
