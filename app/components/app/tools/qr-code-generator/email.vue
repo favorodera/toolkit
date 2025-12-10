@@ -4,10 +4,27 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
   
 const schema = z.object({
-  receiver: z.string('Invalid Input'),
-  subject: z.string('Invalid Input'),
-  body: z.string('Invalid Input'),
+  receiver: z
+    .email('Invalid Email')
+    .max(254, 'Email is too long')
+    .trim(),
+  subject: z
+    .string('Invalid input')
+    .max(200, 'Subject is too long')
+    .trim(),
+  body: z
+    .string('Invalid input')
+    .max(500, 'Body is too long')
+    .trim(),
 })
+  .partial()
+  .refine(({ receiver, subject, body }) => {
+    const mailtoString = `mailto:${receiver}?subject=${subject}&body=${body}`
+    return mailtoString.length <= 800
+  }, {
+    message: 'Email content is too long',
+    path: ['body'],
+  })
   
 const { errors: formErrors } = useForm({
   validationSchema: toTypedSchema(schema),
@@ -15,17 +32,14 @@ const { errors: formErrors } = useForm({
 
 const qrCodeData = useState('qr-code-data')
   
-const state = reactive<z.output<typeof schema>>({
-  receiver: '',
-  subject: '',
-  body: '',
-})
+const state = reactive<z.output<typeof schema>>({})
 
-const computedEmail = computed(() => {
+const mailToString = computed(() => {
+  if (!state.receiver || !state.subject || !state.body) return
   return `mailto:${state.receiver}?subject=${encodeURIComponent(state.subject)}&body=${encodeURIComponent(state.body)}`
 })
   
-watch([computedEmail, formErrors], ([value, errors]) => {
+watch([mailToString, formErrors], ([value, errors]) => {
   qrCodeData.value = Object.keys(errors).length ? ' ' : value
 })
 </script>
@@ -50,20 +64,30 @@ watch([computedEmail, formErrors], ([value, errors]) => {
       <UiField
         :data-invalid="!!errors.length"
         :name="field.name"
+        orientation="responsive"
       >
-  
-        <UiInput
-          autocomplete="email"
-          v-bind="field"
-          type="email"
-          :aria-invalid="!!errors.length"
-          placeholder="Receiver Email Address"
-        />
-  
-        <UiFieldError
-          v-if="errors.length"
-          :errors="errors"
-        />
+
+        <UiFieldContent>
+
+          <UiFieldLabel :for="field.name">
+            Receiver's Address
+          </UiFieldLabel>
+
+          <UiInput
+            :id="field.name"
+            autocomplete="email"
+            v-bind="field"
+            type="email"
+            :aria-invalid="!!errors.length"
+            placeholder="Receiver Email Address"
+          />
+
+          <UiFieldError
+            v-if="errors.length"
+            :errors="errors.slice(0, 1)"
+          />
+
+        </UiFieldContent>
   
       </UiField>
   
@@ -79,20 +103,29 @@ watch([computedEmail, formErrors], ([value, errors]) => {
       <UiField
         :data-invalid="!!errors.length"
         :name="field.name"
+        orientation="responsive"
       >
-  
-        <UiInput
-          autocomplete="off"
-          v-bind="field"
-          type="text"
-          :aria-invalid="!!errors.length"
-          placeholder="Subject"
-        />
-  
-        <UiFieldError
-          v-if="errors.length"
-          :errors="errors"
-        />
+
+        <UiFieldContent>
+
+          <UiFieldLabel :for="field.name">
+            Subject
+          </UiFieldLabel>
+
+          <UiInput
+            :id="field.name"
+            autocomplete="off"
+            v-bind="field"
+            type="text"
+            :aria-invalid="!!errors.length"
+            placeholder="Subject"
+          />
+          <UiFieldError
+            v-if="errors.length"
+            :errors="errors.slice(0, 1)"
+          />
+
+        </UiFieldContent>
   
       </UiField>
   
@@ -109,21 +142,31 @@ watch([computedEmail, formErrors], ([value, errors]) => {
         :data-invalid="!!errors.length"
         :name="field.name"
         class="md:col-span-2"
+        orientation="responsive"
       >
-  
-        <UiTextarea
-          autocomplete="off"
-          v-bind="field"
-          type="text"
-          :aria-invalid="!!errors.length"
-          placeholder="Email Body"
-          class="max-h-[calc(100dvh-22rem)] flex-1"
-        />
-  
-        <UiFieldError
-          v-if="errors.length"
-          :errors="errors"
-        />
+
+        <UiFieldContent>
+
+          <UiFieldLabel :for="field.name">
+            Body
+          </UiFieldLabel>
+
+          <UiTextarea
+            :id="field.name"
+            autocomplete="off"
+            v-bind="field"
+            type="text"
+            :aria-invalid="!!errors.length"
+            placeholder="Email Body"
+            class="max-h-[calc(100dvh-26rem)] flex-1"
+          />
+
+          <UiFieldError
+            v-if="errors.length"
+            :errors="errors.slice(0, 1)"
+          />
+
+        </UiFieldContent>
   
       </UiField>
   
