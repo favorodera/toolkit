@@ -26,28 +26,36 @@ const schema = z.object({
     path: ['body'],
   })
   
-const { errors: formErrors } = useForm({
+const { errors: formErrors, values: formValues } = useForm({
   validationSchema: toTypedSchema(schema),
 })
 
 const qrCodeData = useState('qr-code-data')
   
-const state = reactive<z.output<typeof schema>>({})
-
-const mailToString = computed(() => {
-  if (!state.receiver || !state.subject || !state.body) return
-  return `mailto:${state.receiver}?subject=${encodeURIComponent(state.subject)}&body=${encodeURIComponent(state.body)}`
-})
+const state = reactive<Partial<z.output<typeof schema>>>({})
   
-watch([mailToString, formErrors], ([value, errors]) => {
-  qrCodeData.value = Object.keys(errors).length ? ' ' : value
+watch([formValues, formErrors], ([values, errors]) => {
+  const { receiver, subject, body } = values
+
+  if (Object.keys(errors).length || !receiver) {
+    qrCodeData.value = undefined
+  } else {
+    const params = []
+    
+    if (subject) params.push(`subject=${encodeURIComponent(subject)}`)
+    if (body) params.push(`body=${encodeURIComponent(body)}`)
+
+    const queryString = params.length > 0 ? `?${params.join('&')}` : ''
+    
+    qrCodeData.value = `mailto:${receiver}${queryString}`
+  }
 })
 </script>
     
 <template>
   
   <form
-    id="qr-code-text-form"
+    id="qr-code-email-form"
     class="
       grid flex-1 auto-rows-min grid-rows-[auto_auto_1fr] gap-4
       md:grid-cols-2 md:grid-rows-[auto_1fr]

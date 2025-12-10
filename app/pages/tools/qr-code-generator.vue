@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useQRCode } from '@vueuse/integrations/useQRCode'
-import { LazyAppToolsQrCodeGeneratorEmail, LazyAppToolsQrCodeGeneratorText, LazyAppToolsQrCodeGeneratorUrl, LazyAppToolsQrCodeGeneratorWifi } from '#components'
+import { LazyAppToolsQrCodeGeneratorContact, LazyAppToolsQrCodeGeneratorEmail, LazyAppToolsQrCodeGeneratorText, LazyAppToolsQrCodeGeneratorUrl, LazyAppToolsQrCodeGeneratorWifi } from '#components'
   
 definePageMeta({
   layout: 'tool',
@@ -36,6 +36,7 @@ const dataTypeComponents = [
   LazyAppToolsQrCodeGeneratorText,
   LazyAppToolsQrCodeGeneratorEmail,
   LazyAppToolsQrCodeGeneratorWifi,
+  LazyAppToolsQrCodeGeneratorContact,
 ]
 
 const errorCorrectionLevels = ref([
@@ -223,188 +224,188 @@ function downloadQRCode(fileType: 'svg' | 'png') {
         :key="index"
         :value="content.type"
         class="
-          relative flex max-h-[calc(100dvh-14rem)] flex-1 flex-col gap-4
-          rounded-md border border-border p-4
+          relative scrollbar-hidden flex max-h-[calc(100dvh-14rem)] flex-1
+          flex-col gap-4 overflow-x-hidden overflow-y-auto rounded-md border
+          border-border p-4
         "
       >
 
         <KeepAlive>
           <component :is="dataTypeComponents[index]" />
         </KeepAlive>
-
-        <UiDialog>
-
-          <UiDialogTrigger
-            as-child
-            class="absolute right-8 bottom-14 z-1"
-          >
-            <UiButton
-              variant="secondary"
-              size="icon-lg"
-            >
-              <Icon name="lucide:qr-code" />
-              <span class="sr-only">Preview QR Code</span>
-            </UiButton>
-          </UiDialogTrigger>
-
-          <UiDialogContent>
-
-
-            <UiDialogHeader>
-              <UiDialogTitle>Preview QR Code</UiDialogTitle>
-              <UiDialogDescription>Preview and customize generated QR Code</UiDialogDescription>
-            </UiDialogHeader>
-
-            <div
-              class="
-                grid aspect-square w-full place-items-center rounded-md border
-                border-border p-4
-              "
-            >
-
-              <NuxtImg
-                :src="qrCode.value"
-                fit="cover"
-                class="aspect-square max-w-full"
-                :style="{ width: settings.width }"
-              />
-
-            </div>
-
-            <UiButtonGroup
-              class="w-full"
-              aria-label="Download QR Code"
-            >
-              
-
-              <UiTooltip>
-
-                <UiTooltipTrigger as-child>
-                  <UiButton
-                    variant="secondary"
-                    size="sm"
-                    class="flex-1"
-                    @click.prevent="downloadQRCode('png')"
-                  >
-                    <Icon name="lucide:image" />
-                    PNG
-                  </UiButton>
-                </UiTooltipTrigger>
-
-                <UiTooltipContent>
-                  Download as PNG
-                </UiTooltipContent>
-
-              </UiTooltip>
-              
-              <UiButtonGroupSeparator class="shrink-0" />
-
-              <UiTooltip>
-
-                <UiTooltipTrigger as-child>
-                  <UiButton
-                    variant="secondary"
-                    size="sm"
-                    class="flex-1"
-                    @click.prevent="downloadQRCode('svg')"
-                  >
-                    <Icon name="lucide:file-code" />
-                    SVG
-                  </UiButton>
-                </UiTooltipTrigger>
-
-                <UiTooltipContent>
-                  Download as SVG
-                </UiTooltipContent>
-
-              </UiTooltip>
-              
-            </UiButtonGroup>
-            
-            <form
-              id="qr-code-settings"
-              class="
-                grid flex-1 auto-rows-min grid-rows-[auto_auto_1fr] gap-4
-                md:grid-cols-2
-              "
-            >
-              <UiField>
-
-                <UiFieldContent>
-
-                  <UiFieldLabel for="error-correction-level">
-                    Error Correction Level
-                  </UiFieldLabel>
-
-                  <UiSelect
-                    id="error-correction-level"
-                    v-model:model-value="settings.errorCorrectionLevel"
-                  >
-
-                    <UiSelectTrigger class="w-full">
-                      <UiSelectValue />
-                    </UiSelectTrigger>
-
-                    <UiSelectContent>
-                      <UiSelectItem
-                        v-for="level in errorCorrectionLevels"
-                        :key="level.value"
-                        :value="level.value"
-                      >
-                        {{ level.label }}
-                      </UiSelectItem>
-                    </UiSelectContent>
-
-                  </UiSelect>
-
-                </UiFieldContent>
-
-              </UiField>
-
-              <UiField>
-                <UiFieldContent>
-
-                  <UiFieldLabel for="margin">
-                    Margin
-                  </UiFieldLabel>
-
-                  <UiSlider
-                    id="margin"
-                    v-model="settings.margin"
-                    :min="1"
-                    :max="16"
-                  />
-
-                </UiFieldContent>
-              </UiField>
-
-              <UiField>
-                <UiFieldContent>
-
-                  <UiFieldLabel for="width">
-                    Width
-                  </UiFieldLabel>
-
-                  <UiSlider
-                    id="width"
-                    v-model="settings.width"
-                    :min="1"
-                    :max="1024"
-                  />
-
-                </UiFieldContent>
-              </UiField>
-
-            </form>
-               
-          </UiDialogContent>
-
-        </UiDialog>
-        
+       
       </UiTabsContent>
   
     </UiTabs>
     
+    <UiDialog>
+
+      <UiDialogTrigger
+        as-child
+        class="absolute right-8 bottom-8 z-1"
+      >
+        <UiButton
+          variant="secondary"
+          size="icon-lg"
+        >
+          <Icon name="lucide:qr-code" />
+          <span class="sr-only">Preview QR Code</span>
+        </UiButton>
+      </UiDialogTrigger>
+
+      <UiDialogContent>
+
+
+        <UiDialogHeader>
+          <UiDialogTitle>Preview QR Code</UiDialogTitle>
+          <UiDialogDescription>Preview and customize generated QR Code</UiDialogDescription>
+        </UiDialogHeader>
+
+        <div
+          class="
+            grid aspect-square w-full place-items-center rounded-md border
+            border-border p-4
+          "
+        >
+
+          <NuxtImg
+            :src="qrCode.value"
+            fit="cover"
+            class="aspect-square max-w-full"
+            :style="{ width: settings.width }"
+          />
+
+        </div>
+
+        <UiButtonGroup
+          class="w-full"
+          aria-label="Download QR Code"
+        >
+    
+
+          <UiTooltip>
+
+            <UiTooltipTrigger as-child>
+              <UiButton
+                variant="secondary"
+                size="sm"
+                class="flex-1"
+                @click.prevent="downloadQRCode('png')"
+              >
+                <Icon name="lucide:image" />
+                PNG
+              </UiButton>
+            </UiTooltipTrigger>
+
+            <UiTooltipContent>
+              Download as PNG
+            </UiTooltipContent>
+
+          </UiTooltip>
+    
+          <UiButtonGroupSeparator class="shrink-0" />
+
+          <UiTooltip>
+
+            <UiTooltipTrigger as-child>
+              <UiButton
+                variant="secondary"
+                size="sm"
+                class="flex-1"
+                @click.prevent="downloadQRCode('svg')"
+              >
+                <Icon name="lucide:file-code" />
+                SVG
+              </UiButton>
+            </UiTooltipTrigger>
+
+            <UiTooltipContent>
+              Download as SVG
+            </UiTooltipContent>
+
+          </UiTooltip>
+    
+        </UiButtonGroup>
+  
+        <form
+          id="qr-code-settings"
+          class="
+            grid flex-1 auto-rows-min grid-rows-[auto_auto_1fr] gap-4
+            md:grid-cols-2
+          "
+        >
+          <UiField>
+
+            <UiFieldContent>
+
+              <UiFieldLabel for="error-correction-level">
+                Error Correction Level
+              </UiFieldLabel>
+
+              <UiSelect
+                id="error-correction-level"
+                v-model:model-value="settings.errorCorrectionLevel"
+              >
+
+                <UiSelectTrigger class="w-full">
+                  <UiSelectValue />
+                </UiSelectTrigger>
+
+                <UiSelectContent>
+                  <UiSelectItem
+                    v-for="level in errorCorrectionLevels"
+                    :key="level.value"
+                    :value="level.value"
+                  >
+                    {{ level.label }}
+                  </UiSelectItem>
+                </UiSelectContent>
+
+              </UiSelect>
+
+            </UiFieldContent>
+
+          </UiField>
+
+          <UiField>
+            <UiFieldContent>
+
+              <UiFieldLabel for="margin">
+                Margin
+              </UiFieldLabel>
+
+              <UiSlider
+                id="margin"
+                v-model="settings.margin"
+                :min="1"
+                :max="16"
+              />
+
+            </UiFieldContent>
+          </UiField>
+
+          <UiField>
+            <UiFieldContent>
+
+              <UiFieldLabel for="width">
+                Width
+              </UiFieldLabel>
+
+              <UiSlider
+                id="width"
+                v-model="settings.width"
+                :min="1"
+                :max="1024"
+              />
+
+            </UiFieldContent>
+          </UiField>
+
+        </form>
+     
+      </UiDialogContent>
+
+    </UiDialog>
   </section>
   
 </template>
