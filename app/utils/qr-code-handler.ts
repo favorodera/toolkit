@@ -22,31 +22,35 @@ function createUrlSchema(level: QRCodeSettings['errorCorrectionLevel']) {
 }
 
 function createTextSchema(level: QRCodeSettings['errorCorrectionLevel']) {
-  return z.string().min(1, 'Text cannot be empty').max(SAFE_LIMITS[level], `Text too long for QR code with ${level} error correction`)
+  return z.string('Invalid input').nonempty('Text cannot be empty').max(SAFE_LIMITS[level], `Text too long for QR code with ${level} error correction`)
+}
+
+function createTelSchema(level: QRCodeSettings['errorCorrectionLevel']) {
+  return z.string('Invalid input').startsWith('+', 'Invalid phone number format').nonempty('Phone number cannot be empty').max(SAFE_LIMITS[level], `Phone number too long for QR code with ${level} error correction`)
 }
 
 const wifiSchema = z.object({
-  ssid: z.string().min(1, 'SSID is required').max(32, 'SSID is too long (max 32 characters)'),
-  password: z.string().max(63, 'Password is too long (max 63 characters)'),
+  ssid: z.string('Invalid input').nonempty('SSID is required').max(32, 'SSID is too long (max 32 characters)'),
+  password: z.string('Invalid input').max(63, 'Password is too long (max 63 characters)'),
   hidden: z.boolean(),
   auth: z.enum(['WPA', 'WEP', 'nopass', 'WPA2']),
 })
 
 const mailSchema = z.object({
   receiver: z.email('Invalid email address'),
-  subject: z.string().max(200, 'Subject is too long (max 200 characters)'),
-  body: z.string().max(500, 'Body is too long (max 500 characters)'),
+  subject: z.string('Invalid input').max(200, 'Subject is too long (max 200 characters)'),
+  body: z.string('Invalid input').max(500, 'Body is too long (max 500 characters)'),
 })
 
 const contactSchema = z.object({
-  firstName: z.string().min(1, 'First name is required').max(100, 'First name is too long'),
-  lastName: z.string().max(100, 'Last name is too long').optional(),
-  title: z.string().max(100, 'Title is too long').optional(),
+  firstName: z.string('Invalid input').nonempty('First name is required').max(100, 'First name is too long'),
+  lastName: z.string('Invalid input').max(100, 'Last name is too long').optional(),
+  title: z.string('Invalid input').max(100, 'Title is too long').optional(),
   email: z.email('Invalid email').optional().or(z.literal('')),
-  phoneNumber: z.string().max(20, 'Phone number is too long').optional(),
-  address: z.string().max(200, 'Address is too long').optional(),
+  phoneNumber: z.string('Invalid input').max(20, 'Phone number is too long').optional(),
+  address: z.string('Invalid input').max(200, 'Address is too long').optional(),
   website: z.url('Invalid URL').optional().or(z.literal('')),
-  organization: z.string().max(100, 'Organization is too long').optional(),
+  organization: z.string('Invalid input').max(100, 'Organization is too long').optional(),
 })
 
 function downloadQRCode(fileType: 'svg' | 'png', canvasWidth: number[], dataType: QRCodeDataType, dataUrl?: string) {
@@ -116,6 +120,7 @@ export default function () {
       contactSchema,
       createUrlSchema,
       createTextSchema,
+      createTelSchema,
     },
     downloadQRCode,
   }
