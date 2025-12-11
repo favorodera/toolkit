@@ -5,6 +5,7 @@ const props = defineProps<{
     icon: string
   }>
   modelValue: string
+  class?: string
 }>()
 
 const emit = defineEmits(['update:modelValue'])
@@ -24,6 +25,7 @@ const selected = computed({
     <UiSelectTrigger
       size="sm"
       class="ml-2 font-medium text-foreground"
+      :class="props.class"
     >
       <Icon
         :name="tabs.find(tab => tab.value === selected)?.icon || 'lucide:sparkles'"
