@@ -7,6 +7,7 @@ const {
     contactSchema,
     createUrlSchema,
     createTextSchema,
+    createTelSchema,
   },
   SAFE_LIMITS,
   QR_CODE_BYTE_LIMITS,
@@ -18,6 +19,7 @@ export const useQRCodeStore = defineStore('qr-code-store', () => {
 
   const QRCodeURLData = ref<string>('')
   const QRCodeTextData = ref<string>('')
+  const QRCodeTelData = ref<string>('')
 
   const QRCodeWifiData = reactive<WifiSchema>({
     ssid: '',
@@ -83,6 +85,15 @@ export const useQRCodeStore = defineStore('qr-code-store', () => {
         case 'text': {
           const textSchemaWithLevel = createTextSchema(level)
           const result = textSchemaWithLevel.safeParse(trim(QRCodeTextData.value))
+          if (!result.success) {
+            validationErrors.value = result.error.issues.map(error => error.message)
+          }
+          break
+        }
+
+        case 'tel': {
+          const telSchemaWithLevel = createTelSchema(level)
+          const result = telSchemaWithLevel.safeParse(trim(QRCodeTelData.value))
           if (!result.success) {
             validationErrors.value = result.error.issues.map(error => error.message)
           }
@@ -182,6 +193,11 @@ export const useQRCodeStore = defineStore('qr-code-store', () => {
         break
       }
 
+      case 'tel': {
+        dataString = trim(QRCodeTelData.value) || ' '
+        break
+      }
+
       case 'wifi': {
         const { ssid, password, hidden, auth } = QRCodeWifiData
         
@@ -277,6 +293,7 @@ export const useQRCodeStore = defineStore('qr-code-store', () => {
     QRCodeWifiData,
     QRCodeMailData,
     QRCodeTextData,
+    QRCodeTelData,
     QRCodeContactData,
     QRCodeDataString,
     QRCode,
