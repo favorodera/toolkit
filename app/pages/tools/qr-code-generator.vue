@@ -42,58 +42,7 @@ const errorCorrectionLevels = ref([
 const { QRCode, QRCodeDataType, validationErrors, validationWarnings, hasWarnings, isValid, QRCodeSettings } = storeToRefs(useQRCodeStore())
   
 
-function downloadQRCode(fileType: 'svg' | 'png') {
-  if (!QRCode.value.value) return
-
-  const dataUrl = QRCode.value.value
-  const filename = `qrcode-${QRCodeDataType.value}-${Date.now()}.${fileType}`
-
-  switch (fileType) {
-    case 'png': {
-      const anchorElement = document.createElement('a')
-      anchorElement.href = dataUrl
-      anchorElement.download = filename
-      document.body.appendChild(anchorElement)
-      anchorElement.click()
-      document.body.removeChild(anchorElement)
-      break
-    }
-  
-    case 'svg': {
-      const image = new Image()
-
-      image.onload = () => {
-        const canvas = document.createElement('canvas')
-        canvas.width = QRCodeSettings.value.width[0]!
-        canvas.height = QRCodeSettings.value.width[0]!
-
-        const context = canvas.getContext('2d')
-        if (!context) return
-
-        context.drawImage(image, 0, 0)
-
-        const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
-<svg width="${canvas.width}" height="${canvas.height}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <image width="${canvas.width}" height="${canvas.height}" xlink:href="${dataUrl}"/>
-</svg>`
-
-        const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' })
-        const objectUrl = URL.createObjectURL(blob)
-
-        const anchorElement = document.createElement('a')
-        anchorElement.href = objectUrl
-        anchorElement.download = filename
-        document.body.appendChild(anchorElement)
-        anchorElement.click()
-        document.body.removeChild(anchorElement)
-        URL.revokeObjectURL(objectUrl)
-      }
-
-      image.src = dataUrl
-      break
-    }
-  }
-}
+const { downloadQRCode } = qrCodeHandler()
 </script>
   
 <template>
@@ -310,7 +259,7 @@ function downloadQRCode(fileType: 'svg' | 'png') {
 
         <ul
           v-if="hasWarnings && isValid"
-          class="text-xs text-warning"
+          class="text-warning text-xs"
         >
           <li
             v-for="warning in validationWarnings.slice(-2)"
@@ -339,7 +288,7 @@ function downloadQRCode(fileType: 'svg' | 'png') {
                 size="sm"
                 class="flex-1"
                 :disabled="!isValid"
-                @click.prevent="downloadQRCode('png')"
+                @click.prevent="downloadQRCode('png', QRCodeSettings.width, QRCodeDataType, QRCode.value)"
               >
                 <Icon name="lucide:image" />
                 PNG
@@ -362,7 +311,7 @@ function downloadQRCode(fileType: 'svg' | 'png') {
                 size="sm"
                 class="flex-1"
                 :disabled="!isValid"
-                @click.prevent="downloadQRCode('svg')"
+                @click.prevent="downloadQRCode('svg', QRCodeSettings.width, QRCodeDataType, QRCode.value)"
               >
                 <Icon name="lucide:file-code" />
                 SVG
