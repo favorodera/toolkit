@@ -1,54 +1,16 @@
 import { useQRCode } from '@vueuse/integrations/useQRCode.js'
-import { z } from 'zod'
 
-// QR Code BYTE capacity limits (most common for URLs, emails, UTF-8 text)
-const QR_CODE_BYTE_LIMITS = {
-  L: 2953, // Low error correction (~7% recovery)
-  M: 2331, // Medium error correction (~15% recovery)
-  Q: 1663, // Quartile error correction (~25% recovery)
-  H: 1273, // High error correction (~30% recovery)
-}
-
-// Safe limits (75% of max to ensure reliability)
-const SAFE_LIMITS = {
-  L: Math.floor(QR_CODE_BYTE_LIMITS.L * 0.75), // ~2215
-  M: Math.floor(QR_CODE_BYTE_LIMITS.M * 0.75), // ~1748
-  Q: Math.floor(QR_CODE_BYTE_LIMITS.Q * 0.75), // ~1247
-  H: Math.floor(QR_CODE_BYTE_LIMITS.H * 0.75), // ~955
-}
-
-// Dynamic validation schemas based on error correction level
-function createUrlSchema(level: keyof typeof SAFE_LIMITS) {
-  return z.url('Invalid URL format').max(SAFE_LIMITS[level], `URL too long for QR code with ${level} error correction`)
-}
-
-function createTextSchema(level: keyof typeof SAFE_LIMITS) {
-  return z.string().min(1, 'Text cannot be empty').max(SAFE_LIMITS[level], `Text too long for QR code with ${level} error correction`)
-}
-
-const wifiSchema = z.object({
-  ssid: z.string().min(1, 'SSID is required').max(32, 'SSID is too long (max 32 characters)'),
-  password: z.string().max(63, 'Password is too long (max 63 characters)'),
-  hidden: z.boolean(),
-  auth: z.enum(['WPA', 'WEP', 'nopass', 'WPA2']),
-})
-
-const mailSchema = z.object({
-  receiver: z.email('Invalid email address'),
-  subject: z.string().max(200, 'Subject is too long (max 200 characters)'),
-  body: z.string().max(500, 'Body is too long (max 500 characters)'),
-})
-
-const contactSchema = z.object({
-  firstName: z.string().min(1, 'First name is required').max(100, 'First name is too long'),
-  lastName: z.string().max(100, 'Last name is too long').optional(),
-  title: z.string().max(100, 'Title is too long').optional(),
-  email: z.string().email('Invalid email').optional().or(z.literal('')),
-  phoneNumber: z.string().max(20, 'Phone number is too long').optional(),
-  address: z.string().max(200, 'Address is too long').optional(),
-  website: z.string().url('Invalid URL').optional().or(z.literal('')),
-  organization: z.string().max(100, 'Organization is too long').optional(),
-})
+const {
+  schemas: {
+    wifiSchema,
+    mailSchema,
+    contactSchema,
+    createUrlSchema,
+    createTextSchema,
+  },
+  SAFE_LIMITS,
+  QR_CODE_BYTE_LIMITS,
+} = qrCodeHandler()
 
 export const useQRCodeStore = defineStore('qr-code-store', () => {
 
@@ -57,20 +19,20 @@ export const useQRCodeStore = defineStore('qr-code-store', () => {
   const QRCodeURLData = ref<string>('')
   const QRCodeTextData = ref<string>('')
 
-  const QRCodeWifiData = reactive<z.output<typeof wifiSchema>>({
+  const QRCodeWifiData = reactive<WifiSchema>({
     ssid: '',
     password: '',
     hidden: false,
     auth: 'WPA',
   })
 
-  const QRCodeMailData = reactive<z.output<typeof mailSchema>>({
+  const QRCodeMailData = reactive<MailSchema>({
     receiver: '',
     subject: '',
     body: '',
   })
 
-  const QRCodeContactData = reactive<z.output<typeof contactSchema>>({
+  const QRCodeContactData = reactive<ContactSchema>({
     firstName: '',
     lastName: '',
     title: '',
@@ -101,7 +63,7 @@ export const useQRCodeStore = defineStore('qr-code-store', () => {
   }
 
   // Validate current data
-  const validateCurrentData = () => {
+  function validateCurrentData() {
     validationErrors.value = []
     validationWarnings.value = []
 
@@ -130,7 +92,7 @@ export const useQRCodeStore = defineStore('qr-code-store', () => {
         case 'wifi': {
           const result = wifiSchema.safeParse(QRCodeWifiData)
           if (!result.success) {
-            validationErrors.value = result.error.issues.map(e => e.message)
+            validationErrors.value = result.error.issues.map(error => error.message)
           }
           break
         }
@@ -138,7 +100,7 @@ export const useQRCodeStore = defineStore('qr-code-store', () => {
         case 'mail': {
           const result = mailSchema.safeParse(QRCodeMailData)
           if (!result.success) {
-            validationErrors.value = result.error.issues.map(e => e.message)
+            validationErrors.value = result.error.issues.map(error => error.message)
           }
           break
         }
@@ -146,7 +108,7 @@ export const useQRCodeStore = defineStore('qr-code-store', () => {
         case 'contact': {
           const result = contactSchema.safeParse(QRCodeContactData)
           if (!result.success) {
-            validationErrors.value = result.error.issues.map(e => e.message)
+            validationErrors.value = result.error.issues.map(error => error.message)
           }
           break
         }
@@ -158,11 +120,11 @@ export const useQRCodeStore = defineStore('qr-code-store', () => {
   }
 
   // Check data string length and add warnings
-  const checkDataStringLength = (dataString: string) => {
+  function checkDataStringLength(dataString: string) {
     const length = dataString.length
     const { max, safe } = getCurrentLimit()
     const level = QRCodeSettings.errorCorrectionLevel
-  
+
     // Critical: exceeds absolute maximum
     if (length > max) {
       validationWarnings.value.push(
@@ -170,35 +132,35 @@ export const useQRCodeStore = defineStore('qr-code-store', () => {
       )
       return
     }
-  
+
     // Warning: exceeds safe limit
     if (length > safe) {
       validationWarnings.value.push(
         `Exceeds safe limit (${length}/${safe} bytes). May be difficult to scan.`,
       )
     }
-  
+
     // Info: approaching limit
     if (length > safe * 0.7 && length <= safe) {
       validationWarnings.value.push(
         `Approaching capacity (${length}/${safe} bytes). Consider shortening.`,
       )
     }
-  
+
     // Module density warning
     if (length > 800) {
       validationWarnings.value.push(
         `Dense QR code.`,
       )
     }
-  
+
     // Error correction recommendations
     if (length > 600 && level === 'H') {
       validationWarnings.value.push(
         `Switch to level M for ${Math.floor((SAFE_LIMITS.M / SAFE_LIMITS.H - 1) * 100)}% more capacity.`,
       )
     }
-  
+
     if (length < 200 && level === 'L') {
       validationWarnings.value.push(
         `Use level H for better damage resistance.`,
