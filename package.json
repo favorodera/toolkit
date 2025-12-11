@@ -9,6 +9,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "dev:hot": "nuxt cleanup && nuxt prepare && nuxt dev",
+    "build:hot": "nuxt cleanup && nuxt prepare && nuxt build",
     "lint": "eslint . --fix"
   },
   "dependencies": {

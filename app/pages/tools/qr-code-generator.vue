@@ -24,6 +24,13 @@ const tabs: { value: QRCodeDataType, icon: string }[] = [
   { value: 'tel', icon: 'lucide:phone' },
 ]
 
+const getTabClass = (index: number) => {
+  if (index < 2) return ''
+  if (index < 4) return 'hidden sm:flex'
+  if (index < 5) return 'hidden md:flex'
+  return 'hidden lg:flex'
+}
+
 const contentComponents = [
   LazyAppToolsQrCodeGeneratorUrl,
   LazyAppToolsQrCodeGeneratorText,
@@ -56,107 +63,48 @@ const { downloadQRCode } = qrCodeHandler()
       v-model="QRCodeDataType"
       class="h-[calc(100dvh-16rem)]"
     >
+      <UiTabsList class="w-full">
 
-      <UiTabsList
-        class="
-          w-full
-          **:cursor-pointer
-        "
-      >
-
-        <div
-          class="
-            contents
-            sm:hidden
-          "
+        <UiTabsTrigger
+          v-for="(tab, index) in tabs"
+          :key="tab.value"
+          :value="tab.value"
+          :class="getTabClass(index)"
         >
-          <UiTabsTrigger
-            v-for="tab in tabs.slice(0, 2)"
-            :key="tab.value"
-            :value="tab.value"
-          >
-            <Icon
-              :name="tab.icon"
-            />
-            {{ tab.value.toUpperCase() }}
-          </UiTabsTrigger>
+          <Icon :name="tab.icon" />
+          {{ tab.value.toUpperCase() }}
+        </UiTabsTrigger>
 
-          <AppToolsQrCodeGeneratorMobileTabList
-            v-model="QRCodeDataType"
-            :tabs="tabs.slice(2)"
-          />
-        </div>
+        <AppToolsQrCodeGeneratorMobileTabList
+          v-model="QRCodeDataType"
+          :tabs="tabs.slice(2)"
+          class="sm:hidden"
+        />
 
-        <div
+        <AppToolsQrCodeGeneratorMobileTabList
+          v-model="QRCodeDataType"
+          :tabs="tabs.slice(4)"
           class="
             hidden
-            sm:contents
+            sm:flex
             md:hidden
           "
-        >
-          <UiTabsTrigger
-            v-for="tab in tabs.slice(0, 4)"
-            :key="tab.value"
-            :value="tab.value"
-          >
-            <Icon
-              :name="tab.icon"
-            />
-            {{ tab.value.toUpperCase() }}
-          </UiTabsTrigger>
+        />
 
-          <AppToolsQrCodeGeneratorMobileTabList
-            v-model="QRCodeDataType"
-            :tabs="tabs.slice(4)"
-          />
-        </div>
-
-        <div
+        <AppToolsQrCodeGeneratorMobileTabList
+          v-model="QRCodeDataType"
+          :tabs="tabs.slice(5)"
           class="
             hidden
-            md:contents
+            md:flex
             lg:hidden
           "
-        >
-          <UiTabsTrigger
-            v-for="tab in tabs.slice(0, 5)"
-            :key="tab.value"
-            :value="tab.value"
-          >
-            <Icon
-              :name="tab.icon"
-            />
-            {{ tab.value.toUpperCase() }}
-          </UiTabsTrigger>
-
-          <AppToolsQrCodeGeneratorMobileTabList
-            v-model="QRCodeDataType"
-            :tabs="tabs.slice(5)"
-          />
-        </div>
-
-        <div
-          class="
-            hidden
-            lg:contents
-          "
-        >
-          <UiTabsTrigger
-            v-for="tab in tabs"
-            :key="tab.value"
-            :value="tab.value"
-          >
-            <Icon
-              :name="tab.icon"
-            />
-            {{ tab.value.toUpperCase() }}
-          </UiTabsTrigger>
-        </div>
+        />
 
       </UiTabsList>
-  
+
       <UiTabsContent
-        v-for="tab, index in tabs"
+        v-for="(tab, index) in tabs"
         :key="index"
         :value="tab.value"
         class="
@@ -165,13 +113,37 @@ const { downloadQRCode } = qrCodeHandler()
           border-border p-4
         "
       >
+        <AnimatePresence mode="wait">
+          <Motion
+            :key="QRCodeDataType"
+            :initial="{ opacity: 0, scale: 0.96, y: 20 }"
+            :animate="{
+              opacity: 1,
+              scale: 1,
+              y: 0,
+            }"
+            :exit="{
+              opacity: 0,
+              scale: 0.96,
+              y: -20,
+            }"
+            :transition="{
+              duration: 0.35,
+              ease: [0.32, 0.72, 0, 1],
+              scale: { duration: 0.4 },
+              y: { duration: 0.35 },
+            }"
+            class="flex flex-1 flex-col"
+          >
+            <KeepAlive>
+              <component :is="contentComponents[index]" />
+            </KeepAlive>
+          </Motion>
 
-        <KeepAlive>
-          <component :is="contentComponents[index]" />
-        </KeepAlive>
-       
+        </AnimatePresence>
+
       </UiTabsContent>
-  
+
     </UiTabs>
     
     <UiDialog>
@@ -335,7 +307,7 @@ const { downloadQRCode } = qrCodeHandler()
             md:grid-cols-2
           "
         >
-          <UiField>
+          <UiField name="error-correction-level">
 
             <UiFieldContent>
 
@@ -349,6 +321,7 @@ const { downloadQRCode } = qrCodeHandler()
               >
 
                 <UiSelectTrigger
+                  id="error-correction-level"
                   class="w-full"
                   :disabled="!isValid"
                 >
@@ -371,7 +344,7 @@ const { downloadQRCode } = qrCodeHandler()
 
           </UiField>
 
-          <UiField>
+          <UiField name="margin">
             <UiFieldContent>
 
               <UiFieldLabel for="margin">
@@ -389,7 +362,7 @@ const { downloadQRCode } = qrCodeHandler()
             </UiFieldContent>
           </UiField>
 
-          <UiField>
+          <UiField name="width">
             <UiFieldContent>
 
               <UiFieldLabel for="width">
