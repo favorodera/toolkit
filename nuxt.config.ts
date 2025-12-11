@@ -14,7 +14,7 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@nuxtjs/seo',
     'motion-v/nuxt',
-    '@vaxee/nuxt',
+    '@pinia/nuxt',
   ],
 
   imports: {
@@ -77,10 +77,6 @@ export default defineNuxtConfig({
     customCollections: [
       { prefix: 'custom', dir: './app/assets/icons' },
     ],
-  },
-
-  vaxee: {
-    dirs: ['./app/stores/**'],
   },
 
   vueuse: {
