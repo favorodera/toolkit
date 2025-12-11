@@ -194,7 +194,8 @@ export const useQRCodeStore = defineStore('qr-code-store', () => {
       }
 
       case 'tel': {
-        dataString = trim(QRCodeTelData.value) || ' '
+        const phoneNumber = trim(QRCodeTelData.value)
+        dataString = phoneNumber ? `tel:${phoneNumber}` : ' '
         break
       }
 
