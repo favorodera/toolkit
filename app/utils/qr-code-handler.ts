@@ -49,7 +49,7 @@ const contactSchema = z.object({
   organization: z.string().max(100, 'Organization is too long').optional(),
 })
 
-function downloadQRCode(fileType: 'svg' | 'png',canvasWidth:number[],dataType:QRCodeDataType,dataUrl?:string,) {
+function downloadQRCode(fileType: 'svg' | 'png', canvasWidth: number[], dataType: QRCodeDataType, dataUrl?: string) {
   if (!dataUrl) return
 
   const width = canvasWidth[0]
