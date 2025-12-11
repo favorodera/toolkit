@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { useQRCode } from '@vueuse/integrations/useQRCode'
 import { LazyAppToolsQrCodeGeneratorContact, LazyAppToolsQrCodeGeneratorEmail, LazyAppToolsQrCodeGeneratorText, LazyAppToolsQrCodeGeneratorUrl, LazyAppToolsQrCodeGeneratorWifi } from '#components'
   
 definePageMeta({
@@ -16,22 +15,15 @@ useSeoMeta({
   twitterDescription: () => toolsRegistry['qrCodeGenerator'].description,
 })
 
-const qrCodeData = useState('qr-code-data', () => '')
-  
-const dataTypes = [
-  { type: 'url', icon: 'lucide:link-2' },
-  { type: 'text', icon: 'lucide:text' },
-  { type: 'email', icon: 'lucide:mail' },
-  { type: 'wifi', icon: 'lucide:wifi' },
-  { type: 'contact', icon: 'lucide:contact' },
-  { type: 'sms', icon: 'lucide:message-circle-plus' },
-  { type: 'tel', icon: 'lucide:phone' },
-  { type: 'calendar', icon: 'lucide:calendar' },
+const tabs: { value: QRCodeDataType, icon: string }[] = [
+  { value: 'url', icon: 'lucide:link-2' },
+  { value: 'text', icon: 'lucide:text' },
+  { value: 'mail', icon: 'lucide:mail' },
+  { value: 'wifi', icon: 'lucide:wifi' },
+  { value: 'contact', icon: 'lucide:contact' },
 ]
 
-const dataType = ref<typeof dataTypes[number]['type']>('url')
-  
-const dataTypeComponents = [
+const contentComponents = [
   LazyAppToolsQrCodeGeneratorUrl,
   LazyAppToolsQrCodeGeneratorText,
   LazyAppToolsQrCodeGeneratorEmail,
@@ -47,20 +39,14 @@ const errorCorrectionLevels = ref([
 
 ])
 
-const settings = ref({
-  errorCorrectionLevel: 'H',
-  margin: [3],
-  width: [256],
-})
-
-const qrCode = useQRCode(qrCodeData, { ...settings.value })
+const { QRCode, QRCodeDataType, validationErrors, validationWarnings, hasWarnings, isValid, QRCodeSettings } = storeToRefs(useQRCodeStore())
   
 
 function downloadQRCode(fileType: 'svg' | 'png') {
-  if (!qrCode.value) return
+  if (!QRCode.value.value) return
 
-  const dataUrl = qrCode.value
-  const filename = `qrcode-${dataType.value}-${Date.now()}.${fileType}`
+  const dataUrl = QRCode.value.value
+  const filename = `qrcode-${QRCodeDataType.value}-${Date.now()}.${fileType}`
 
   switch (fileType) {
     case 'png': {
@@ -78,8 +64,8 @@ function downloadQRCode(fileType: 'svg' | 'png') {
 
       image.onload = () => {
         const canvas = document.createElement('canvas')
-        canvas.width = settings.value.width[0]!
-        canvas.height = settings.value.width[0]!
+        canvas.width = QRCodeSettings.value.width[0]!
+        canvas.height = QRCodeSettings.value.width[0]!
 
         const context = canvas.getContext('2d')
         if (!context) return
@@ -115,9 +101,8 @@ function downloadQRCode(fileType: 'svg' | 'png') {
   <section
     class="relative"
   >
-  
     <UiTabs
-      v-model="dataType"
+      v-model="QRCodeDataType"
       class="h-[calc(100dvh-16rem)]"
     >
 
@@ -135,19 +120,19 @@ function downloadQRCode(fileType: 'svg' | 'png') {
           "
         >
           <UiTabsTrigger
-            v-for="trigger in dataTypes.slice(0, 2)"
-            :key="trigger.type"
-            :value="trigger.type"
+            v-for="tab in tabs.slice(0, 2)"
+            :key="tab.value"
+            :value="tab.value"
           >
             <Icon
-              :name="trigger.icon"
+              :name="tab.icon"
             />
-            {{ trigger.type.toUpperCase() }}
+            {{ tab.value.toUpperCase() }}
           </UiTabsTrigger>
 
           <AppToolsQrCodeGeneratorMobileTabList
-            v-model="dataType"
-            :data-types="dataTypes.slice(2)"
+            v-model="QRCodeDataType"
+            :tabs="tabs.slice(2)"
           />
         </div>
 
@@ -159,19 +144,19 @@ function downloadQRCode(fileType: 'svg' | 'png') {
           "
         >
           <UiTabsTrigger
-            v-for="trigger in dataTypes.slice(0, 4)"
-            :key="trigger.type"
-            :value="trigger.type"
+            v-for="tab in tabs.slice(0, 4)"
+            :key="tab.value"
+            :value="tab.value"
           >
             <Icon
-              :name="trigger.icon"
+              :name="tab.icon"
             />
-            {{ trigger.type.toUpperCase() }}
+            {{ tab.value.toUpperCase() }}
           </UiTabsTrigger>
 
           <AppToolsQrCodeGeneratorMobileTabList
-            v-model="dataType"
-            :data-types="dataTypes.slice(4)"
+            v-model="QRCodeDataType"
+            :tabs="tabs.slice(4)"
           />
         </div>
 
@@ -183,19 +168,19 @@ function downloadQRCode(fileType: 'svg' | 'png') {
           "
         >
           <UiTabsTrigger
-            v-for="trigger in dataTypes.slice(0, 5)"
-            :key="trigger.type"
-            :value="trigger.type"
+            v-for="tab in tabs.slice(0, 5)"
+            :key="tab.value"
+            :value="tab.value"
           >
             <Icon
-              :name="trigger.icon"
+              :name="tab.icon"
             />
-            {{ trigger.type.toUpperCase() }}
+            {{ tab.value.toUpperCase() }}
           </UiTabsTrigger>
 
           <AppToolsQrCodeGeneratorMobileTabList
-            v-model="dataType"
-            :data-types="dataTypes.slice(5)"
+            v-model="QRCodeDataType"
+            :tabs="tabs.slice(5)"
           />
         </div>
 
@@ -206,23 +191,23 @@ function downloadQRCode(fileType: 'svg' | 'png') {
           "
         >
           <UiTabsTrigger
-            v-for="trigger in dataTypes"
-            :key="trigger.type"
-            :value="trigger.type"
+            v-for="tab in tabs"
+            :key="tab.value"
+            :value="tab.value"
           >
             <Icon
-              :name="trigger.icon"
+              :name="tab.icon"
             />
-            {{ trigger.type.toUpperCase() }}
+            {{ tab.value.toUpperCase() }}
           </UiTabsTrigger>
         </div>
 
       </UiTabsList>
   
       <UiTabsContent
-        v-for="content, index in dataTypes"
+        v-for="tab, index in tabs"
         :key="index"
-        :value="content.type"
+        :value="tab.value"
         class="
           relative scrollbar-hidden flex max-h-[calc(100dvh-14rem)] flex-1
           flex-col gap-4 overflow-x-hidden overflow-y-auto rounded-md border
@@ -231,7 +216,7 @@ function downloadQRCode(fileType: 'svg' | 'png') {
       >
 
         <KeepAlive>
-          <component :is="dataTypeComponents[index]" />
+          <component :is="contentComponents[index]" />
         </KeepAlive>
        
       </UiTabsContent>
@@ -243,6 +228,11 @@ function downloadQRCode(fileType: 'svg' | 'png') {
       <UiDialogTrigger
         as-child
         class="absolute right-8 bottom-8 z-1"
+        :class="{
+          'text-destructive': !isValid,
+          'text-warning': isValid && hasWarnings,
+          'text-success': isValid && !hasWarnings,
+        }"
       >
         <UiButton
           variant="secondary"
@@ -255,7 +245,6 @@ function downloadQRCode(fileType: 'svg' | 'png') {
 
       <UiDialogContent>
 
-
         <UiDialogHeader>
           <UiDialogTitle>Preview QR Code</UiDialogTitle>
           <UiDialogDescription>Preview and customize generated QR Code</UiDialogDescription>
@@ -266,30 +255,90 @@ function downloadQRCode(fileType: 'svg' | 'png') {
             grid aspect-square w-full place-items-center rounded-md border
             border-border p-4
           "
+          :class="{
+            'bg-linear-to-b from-muted/50 from-30% to-background': !isValid,
+          }"
         >
 
           <NuxtImg
-            :src="qrCode"
+            v-if="isValid"
+            :src="QRCode.value"
             fit="cover"
             class="aspect-square max-w-full"
-            :style="{ width: settings.width }"
+            :style="{ width: QRCodeSettings.width }"
+            alt="QR Code"
           />
 
+          <UiEmpty
+            v-else
+            class="
+              size-full
+              **:text-destructive
+            "
+          >
+            <UiEmptyMedia
+              variant="icon"
+            >
+              <Icon name="lucide:alert-circle" />
+            </UiEmptyMedia>
+
+            <UiEmptyHeader>
+              <UiEmptyTitle>Cannot Generate</UiEmptyTitle>
+              <UiEmptyDescription>Fix validation errors</UiEmptyDescription>
+            </UiEmptyHeader>
+
+          </UiEmpty>
+
         </div>
+
+        <ul
+          v-if="!isValid"
+          class="text-xs text-destructive"
+        >
+          <li
+            v-for="error in validationErrors.slice(-2)"
+            :key="error"
+            class="flex items-center gap-1"
+          >
+            <Icon
+              name="lucide:alert-circle"
+              class="h-lh"
+            />
+            {{ error }}
+          </li>
+        </ul>
+
+        <ul
+          v-if="hasWarnings && isValid"
+          class="text-xs text-warning"
+        >
+          <li
+            v-for="warning in validationWarnings.slice(-2)"
+            :key="warning"
+            class="flex items-center gap-1"
+          >
+            <Icon
+              name="lucide:alert-circle"
+              class="h-lh"
+            />
+            {{ warning }}
+          </li>
+
+        </ul>
 
         <UiButtonGroup
           class="w-full"
           aria-label="Download QR Code"
         >
     
-
-          <UiTooltip>
+          <UiTooltip :disabled="!isValid">
 
             <UiTooltipTrigger as-child>
               <UiButton
                 variant="secondary"
                 size="sm"
                 class="flex-1"
+                :disabled="!isValid"
                 @click.prevent="downloadQRCode('png')"
               >
                 <Icon name="lucide:image" />
@@ -305,13 +354,14 @@ function downloadQRCode(fileType: 'svg' | 'png') {
     
           <UiButtonGroupSeparator class="shrink-0" />
 
-          <UiTooltip>
+          <UiTooltip :disabled="!isValid">
 
             <UiTooltipTrigger as-child>
               <UiButton
                 variant="secondary"
                 size="sm"
                 class="flex-1"
+                :disabled="!isValid"
                 @click.prevent="downloadQRCode('svg')"
               >
                 <Icon name="lucide:file-code" />
@@ -344,10 +394,13 @@ function downloadQRCode(fileType: 'svg' | 'png') {
 
               <UiSelect
                 id="error-correction-level"
-                v-model:model-value="settings.errorCorrectionLevel"
+                v-model:model-value="QRCodeSettings.errorCorrectionLevel"
               >
 
-                <UiSelectTrigger class="w-full">
+                <UiSelectTrigger
+                  class="w-full"
+                  :disabled="!isValid"
+                >
                   <UiSelectValue />
                 </UiSelectTrigger>
 
@@ -376,9 +429,10 @@ function downloadQRCode(fileType: 'svg' | 'png') {
 
               <UiSlider
                 id="margin"
-                v-model="settings.margin"
+                v-model="QRCodeSettings.margin"
                 :min="1"
                 :max="16"
+                :disabled="!isValid"
               />
 
             </UiFieldContent>
@@ -393,9 +447,10 @@ function downloadQRCode(fileType: 'svg' | 'png') {
 
               <UiSlider
                 id="width"
-                v-model="settings.width"
+                v-model="QRCodeSettings.width"
                 :min="1"
                 :max="1024"
+                :disabled="!isValid"
               />
 
             </UiFieldContent>

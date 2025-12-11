@@ -1,5 +1,15 @@
 @import './tailwind.css';
 
+:root {
+  --warning: oklch(76.9% 0.188 70.08);
+  --success: oklch(69.6% 0.17 162.48);
+}
+
+.dark {
+  --warning: oklch(82.8% 0.189 84.429);
+  --success: oklch(76.5% 0.177 163.223);
+}
+
 @layer base {
   body {
     @apply antialiased scheme-light dark:scheme-dark;
@@ -13,6 +23,9 @@
   --default-font-family: var(--font-geist);
 
   --header-height: calc(var(--spacing) * 14);
+
+  --color-warning: var(--warning);
+  --color-success: var(--success);
 }
 
 @utility scrollbar-thin {

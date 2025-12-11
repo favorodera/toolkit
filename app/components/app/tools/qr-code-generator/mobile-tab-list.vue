@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
-  dataTypes: Array<{
-    type: string
+  tabs: Array<{
+    value: QRCodeDataType
     icon: string
   }>
   modelValue: string
@@ -26,22 +26,22 @@ const selected = computed({
       class="ml-2 font-medium text-foreground"
     >
       <Icon
-        :name="dataTypes.find(type => type.type === selected)?.icon || 'lucide:sparkles'"
+        :name="tabs.find(tab => tab.value === selected)?.icon || 'lucide:sparkles'"
       />
       <UiSelectValue placeholder="OTHERS" />
     </UiSelectTrigger>
 
     <UiSelectContent>
       <UiSelectItem
-        v-for="item in dataTypes"
-        :key="item.type"
-        :value="item.type"
+        v-for="tab in tabs"
+        :key="tab.value"
+        :value="tab.value"
       >
         <Icon
-          :name="item.icon"
+          :name="tab.icon"
           class="mr-2 size-4"
         />
-        {{ item.type.toLocaleUpperCase() }}
+        {{ tab.value.toLocaleUpperCase() }}
       </UiSelectItem>
     </UiSelectContent>
 

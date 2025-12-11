@@ -1,53 +1,13 @@
 <script lang="ts" setup>
-import { Field as VeeField, useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import { z } from 'zod'
-
-const schema = z.object({
-  ssid: z.string('Invalid input').nonempty('SSID is required').trim(),
-  authentication: z.enum(['WPA', 'WEP', 'nopass'], 'Invalid authentication'),
-  password: z.string('Invalid input').trim().optional(),
-  hidden: z.boolean('Invalid input'),
-})
-
-const { errors: formErrors, values: formValues } = useForm({
-  validationSchema: toTypedSchema(schema),
-})
+const { QRCodeWifiData } = storeToRefs(useQRCodeStore())
 
 const authenticationTypes = [
   { value: 'WPA', label: 'WPA/WPA2' },
   { value: 'WEP', label: 'WEP' },
   { value: 'nopass', label: 'No Password' },
 ]
-const qrCodeData = useState('qr-code-data')
-
-const state = reactive<Partial<z.output<typeof schema>>>({
-  authentication: 'WPA',
-  hidden: false,
-})
 
 const showPassword = ref(false)
-
-watch([formErrors, formValues], ([errors, values]) => {
-  const { ssid, authentication, hidden, password } = values
-
-  if (Object.keys(errors).length || !ssid || !authentication) {
-    qrCodeData.value = undefined
-    return
-  }
-
-  const parts = [`T:${authentication}`, `S:${ssid}`]
-  
-  if (authentication !== 'nopass' && password) {
-    parts.push(`P:${password}`)
-  }
-  
-  if (hidden) {
-    parts.push('H:true')
-  }
-
-  qrCodeData.value = `WIFI:${parts.join(';')};;`
-})
 
 </script>
 
@@ -60,192 +20,128 @@ watch([formErrors, formValues], ([errors, values]) => {
     "
   >
 
-    <VeeField
-      v-slot="{ field, errors }"
-      v-model="state.ssid"
+    <UiField
       name="ssid"
-      validate-on-input
+      orientation="responsive"
     >
+
+      <UiFieldContent>
+
+        <UiFieldLabel for="ssid">
+          SSID
+        </UiFieldLabel>
+
+        <UiInput
+          id="ssid"
+          v-model="QRCodeWifiData.ssid"
+          autocomplete="on"
+          type="text"
+          placeholder="SSID"
+        />
+
+      </UiFieldContent>
   
-      <UiField
-        :data-invalid="!!errors.length"
-        :name="field.name"
-        orientation="responsive"
-      >
+    </UiField>
+    
 
-        <UiFieldContent>
-
-          <UiFieldLabel :for="field.name">
-            SSID
-          </UiFieldLabel>
-
-          <UiInput
-            :id="field.name"
-            autocomplete="on"
-            v-bind="field"
-            type="text"
-            :aria-invalid="!!errors.length"
-            placeholder="SSID"
-          />
-
-          <UiFieldError
-            v-if="errors.length"
-            :errors="errors.slice(0, 1)"
-          />
-
-        </UiFieldContent>
-  
-      </UiField>
-  
-    </VeeField>
-
-    <VeeField
-      v-slot="{ field, errors }"
-      v-model="state.authentication"
+    <UiField
       name="authentication"
-      validate-on-input
+      orientation="responsive"
     >
 
-      <UiField
-        :data-invalid="!!errors.length"
-        :name="field.name"
-        orientation="responsive"
-      >
+      <UiFieldContent>
 
-        <UiFieldContent>
+        <UiFieldLabel for="authentication">
+          Authentication
+        </UiFieldLabel>
 
-          <UiFieldLabel :for="field.name">
-            Authentication
-          </UiFieldLabel>
-
-          <UiSelect
-            :id="field.name"
-            :name="field.name"
-            :model-value="field.value"
-            @update:model-value="field.onChange"
+        <UiSelect
+          id="authentication"
+          v-model="QRCodeWifiData.auth"
+        >
+          <UiSelectTrigger
+            id="authentication"
+            class="w-full"
           >
-            <UiSelectTrigger
-              :id="field.name"
-              class="w-full"
-              :aria-invalid="!!errors.length"
+            <UiSelectValue placeholder="Authentication" />
+          </UiSelectTrigger>
+
+          <UiSelectContent position="item-aligned">
+            <UiSelectItem
+              v-for="authenticationType in authenticationTypes"
+              :key="authenticationType.value"
+              :value="authenticationType.value"
             >
-              <UiSelectValue placeholder="Authentication" />
-            </UiSelectTrigger>
-
-            <UiSelectContent position="item-aligned">
-              <UiSelectItem
-                v-for="authenticationType in authenticationTypes"
-                :key="authenticationType.value"
-                :value="authenticationType.value"
-              >
-                {{ authenticationType.label }}
-              </UiSelectItem>
-            </UiSelectContent>
-          </UiSelect>
-
-          <UiFieldError
-            v-if="errors.length"
-            :errors="errors.slice(0, 1)"
-          />
-
-        </UiFieldContent>
+              {{ authenticationType.label }}
+            </UiSelectItem>
+          </UiSelectContent>
+        </UiSelect>
 
 
-      </UiField>
+      </UiFieldContent>
 
-    </VeeField>
+    </UiField>
 
-    <VeeField
-      v-slot="{ field, errors }"
-      v-model="state.password"
+
+    <UiField
       name="password"
-      validate-on-input
+      orientation="responsive"
     >
-  
-      <UiField
-        :data-invalid="!!errors.length"
-        :name="field.name"
-        orientation="responsive"
-      >
 
-        <UiFieldContent>
+      <UiFieldContent>
 
-          <UiFieldLabel :for="field.name">
-            Password
-          </UiFieldLabel>
+        <UiFieldLabel for="password">
+          Password
+        </UiFieldLabel>
 
-          <UiInputGroup>
+        <UiInputGroup>
 
-            <UiInputGroupInput
-              :id="field.name"
-              autocomplete="current-password"
-              v-bind="field"
-              :type="showPassword ? 'text' : 'password'"
-              :aria-invalid="!!errors.length"
-              placeholder="Password"
-            />
-
-            <UiInputGroupAddon align="inline-end">
-              <UiButton
-                variant="ghost"
-                size="icon"
-                @click.prevent="showPassword = !showPassword"
-              >
-                <Icon :name="showPassword ? 'lucide:eye' : 'lucide:eye-off'" />
-              </UiButton>
-            </UiInputGroupAddon>
-
-          </UiInputGroup>
-         
-
-          <UiFieldError
-            v-if="errors.length"
-            :errors="errors.slice(0, 1)"
+          <UiInputGroupInput
+            id="password"
+            v-model="QRCodeWifiData.password"
+            autocomplete="current-password"
+            :type="showPassword ? 'text' : 'password'"
+            placeholder="Password"
           />
 
-        </UiFieldContent>
-  
-      </UiField>
-  
-    </VeeField>
+          <UiInputGroupAddon align="inline-end">
+            <UiButton
+              variant="ghost"
+              size="icon"
+              @click.prevent="showPassword = !showPassword"
+            >
+              <Icon :name="showPassword ? 'lucide:eye' : 'lucide:eye-off'" />
+            </UiButton>
+          </UiInputGroupAddon>
 
-    <VeeField
-      v-slot="{ field, errors }"
-      v-model="state.hidden"
+        </UiInputGroup>
+
+      </UiFieldContent>
+  
+    </UiField>
+
+
+    <UiField
       name="hidden"
-      validate-on-input
+      orientation="horizontal"
     >
 
-      <UiField
-        orientation="horizontal"
-        :data-invalid="!!errors.length"
-      >
+      <UiFieldContent>
 
-        <UiFieldContent>
+        <UiFieldLabel for="hidden">
+          Hidden Network
+        </UiFieldLabel>
 
-          <UiFieldLabel :for="field.name">
-            Hidden Network
-          </UiFieldLabel>
+        <UiSwitch
+          id="hidden"
+          v-model="QRCodeWifiData.hidden"
+          name="hidden"
+          class="cursor-pointer"
+        />
 
-          <UiSwitch
-            :id="field.name"
-            :name="field.name"
-            :model-value="field.value"
-            :aria-invalid="!!errors.length"
-            class="cursor-pointer"
-            @update:model-value="field.onChange"
-          />
-
-          <UiFieldError
-            v-if="errors.length"
-            :errors="errors.slice(0, 1)"
-          />
-
-        </UiFieldContent>
+      </UiFieldContent>
      
-      </UiField>
-
-    </VeeField>
+    </UiField>
 
   </form>
 
