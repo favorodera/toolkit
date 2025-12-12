@@ -233,7 +233,7 @@ const { downloadQRCode } = qrCodeHandler()
 
         <ul
           v-if="hasWarnings && isValid"
-          class="text-warning text-xs"
+          class="text-xs text-warning"
         >
           <li
             v-for="warning in validationWarnings.slice(-2)"
