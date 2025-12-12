@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { LazyAppToolsQrCodeGeneratorContact, LazyAppToolsQrCodeGeneratorEmail, LazyAppToolsQrCodeGeneratorTel, LazyAppToolsQrCodeGeneratorText, LazyAppToolsQrCodeGeneratorUrl, LazyAppToolsQrCodeGeneratorWifi } from '#components'
+import { LazyAppToolsQrCodeGeneratorContact, LazyAppToolsQrCodeGeneratorEmail, LazyAppToolsQrCodeGeneratorLocation, LazyAppToolsQrCodeGeneratorTel, LazyAppToolsQrCodeGeneratorText, LazyAppToolsQrCodeGeneratorUrl, LazyAppToolsQrCodeGeneratorWifi } from '#components'
   
 definePageMeta({
   layout: 'tool',
@@ -22,6 +22,7 @@ const tabs: { value: QRCodeDataType, icon: string }[] = [
   { value: 'wifi', icon: 'lucide:wifi' },
   { value: 'contact', icon: 'lucide:contact' },
   { value: 'tel', icon: 'lucide:phone' },
+  { value: 'location', icon: 'lucide:map-pin' },
 ]
 
 const getTabClass = (index: number) => {
@@ -38,6 +39,7 @@ const contentComponents = [
   LazyAppToolsQrCodeGeneratorWifi,
   LazyAppToolsQrCodeGeneratorContact,
   LazyAppToolsQrCodeGeneratorTel,
+  LazyAppToolsQrCodeGeneratorLocation,
 ]
 
 const errorCorrectionLevels = ref([
