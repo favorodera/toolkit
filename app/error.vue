@@ -4,7 +4,9 @@ import type { MotionProps } from 'motion-v'
 import type { NuxtError } from '#app'
 
 const props = defineProps<{ error: NuxtError }>()
-const title = computed(() => props.error.statusMessage ?? 'Error')
+const title = computed(() => props.error.statusMessage ?? 'Unknown Error')
+const statusCode = computed(() => props.error.statusCode ?? 500)
+const message = computed(() => props.error.message ?? 'Something went wrong')
 
 useSeoMeta({ title })
 
@@ -124,7 +126,7 @@ const animateChild = ref<MotionProps['variants']>({
         sm:text-7xl
       "
     >
-      {{ error.statusCode }}
+      {{ statusCode }}
     </Motion>
 
     <Motion
@@ -146,8 +148,7 @@ const animateChild = ref<MotionProps['variants']>({
         sm:text-lg
       "
     >
-      Oops! The page you're looking for seems to have wandered off. Don't worry, it happens to
-      the best of us.
+      {{ message }}
     </Motion>
 
     <Motion
