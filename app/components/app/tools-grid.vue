@@ -62,7 +62,10 @@ const animateChild = ref<MotionProps['variants']>({
         class="h-full"
       >
 
-        <NuxtLink :to="tool.path">
+        <NuxtLink
+          :to="tool.path"
+          prefetch
+        >
 
           <UiItemMedia>
             <Icon
