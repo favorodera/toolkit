@@ -6,6 +6,11 @@ defineProps<{
   subtitle?: string
 }>()
 
+const slots = defineSlots<{
+  actions: () => void
+  headline: () => void
+}>()
+
 const animateParent = ref<MotionProps['variants']>({
   initial: {},
   animate: {
@@ -45,6 +50,18 @@ const animateChild = ref<MotionProps['variants']>({
   >
 
     <Motion
+      v-if="slots.headline"
+      as="p"
+      :variants="animateChild"
+      class="
+        max-w-3xl text-base text-balance text-foreground
+        sm:text-lg
+      "
+    >
+      <slot name="headline" />
+    </Motion>
+
+    <Motion
       as="h1"
       :variants="animateChild"
       class="
@@ -70,6 +87,7 @@ const animateChild = ref<MotionProps['variants']>({
     </Motion>
 
     <Motion
+      v-if="slots.actions"
       as="div"
       :variants="animateChild"
       class="flex w-full items-center justify-center gap-2 pt-2"

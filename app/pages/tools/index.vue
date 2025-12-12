@@ -14,6 +14,6 @@ useSeoMeta({
       title="Tools Registry"
     />
 
-    <AppToolsGrid :registry="toolsRegistry" />
+    <AppToolsGrid :tools="registry" />
   </section>
 </template>

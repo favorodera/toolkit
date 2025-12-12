@@ -6,14 +6,7 @@ definePageMeta({
   toolName: 'QR Code Generator',
 })
   
-useSeoMeta({
-  title: () => toolsRegistry['qrCodeGenerator'].name,
-  description: () => toolsRegistry['qrCodeGenerator'].description,
-  ogTitle: () => toolsRegistry['qrCodeGenerator'].name,
-  ogDescription: () => toolsRegistry['qrCodeGenerator'].description,
-  twitterTitle: () => toolsRegistry['qrCodeGenerator'].name,
-  twitterDescription: () => toolsRegistry['qrCodeGenerator'].description,
-})
+useSeoMeta({ ...toolsSeo('qrCodeGenerator') })
 
 const tabs: { value: QRCodeDataType, icon: string }[] = [
   { value: 'url', icon: 'lucide:link-2' },

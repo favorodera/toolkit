@@ -2,12 +2,13 @@
 import { type MotionProps, stagger } from 'motion-v'
 
 defineProps<{
-  registry: Record<string, {
+  tools: {
+    id: string
     name: string
     description: string
     icon: string
     path: string
-  }>
+  }[]
 }>()
 
 const animateParent = ref<MotionProps['variants']>({
@@ -49,7 +50,7 @@ const animateChild = ref<MotionProps['variants']>({
   >
 
     <Motion
-      v-for="tool, key in registry"
+      v-for="tool, key in tools"
       :key
       as-child
       :variants="animateChild"

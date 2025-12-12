@@ -6,14 +6,7 @@ definePageMeta({
   toolName: 'Word Counter',
 })
 
-useSeoMeta({
-  title: () => toolsRegistry['wordCounter'].name,
-  description: () => toolsRegistry['wordCounter'].description,
-  ogTitle: () => toolsRegistry['wordCounter'].name,
-  ogDescription: () => toolsRegistry['wordCounter'].description,
-  twitterTitle: () => toolsRegistry['wordCounter'].name,
-  twitterDescription: () => toolsRegistry['wordCounter'].description,
-})
+useSeoMeta({ ...toolsSeo('wordCounter') })
 
 const input = ref('')
 

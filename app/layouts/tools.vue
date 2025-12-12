@@ -70,7 +70,7 @@ whenever(() => command?.value, () => isCommandOpen.value = true)
             <UiCommandGroup heading="Tools">
 
               <UiCommandItem
-                v-for="tool in toolsRegistry"
+                v-for="tool in registry"
                 :key="tool.name"
                 :value="tool.name"
                 as-child
