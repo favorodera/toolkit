@@ -13,78 +13,62 @@ const { QRCodeMailData } = storeToRefs(useQRCodeStore())
   >
   
     <UiField
-      name="receiver"
       orientation="responsive"
     >
 
-      <UiFieldContent>
+      <UiFieldTitle>
+        Receiver's Address
+      </UiFieldTitle>
 
-        <UiFieldLabel for="receiver">
-          Receiver's Address
-        </UiFieldLabel>
+      <UiInput
+        id="receiver"
+        v-model="QRCodeMailData.receiver"
+        autocomplete="email"
+        type="email"
+        placeholder="Receiver Email Address"
+      />
 
-        <UiInput
-          id="receiver"
-          v-model="QRCodeMailData.receiver"
-          autocomplete="email"
-          type="email"
-          placeholder="Receiver Email Address"
-        />
+    </UiField>
 
+  
+    <UiField
+      orientation="responsive"
+    >
 
-      </UiFieldContent>
+      <UiFieldTitle>
+        Subject
+      </UiFieldTitle>
+
+      <UiInput
+        id="subject"
+        v-model="QRCodeMailData.subject"
+        autocomplete="off"
+        type="text"
+        placeholder="Subject"
+      />
+
   
     </UiField>
 
   
     <UiField
-      name="subject"
-      orientation="responsive"
-    >
-
-      <UiFieldContent>
-
-        <UiFieldLabel for="subject">
-          Subject
-        </UiFieldLabel>
-
-        <UiInput
-          id="subject"
-          v-model="QRCodeMailData.subject"
-          autocomplete="off"
-          type="text"
-          placeholder="Subject"
-        />
-
-
-      </UiFieldContent>
-  
-    </UiField>
-
-  
-    <UiField
-      name="body"
       class="md:col-span-2"
       orientation="responsive"
     >
 
-      <UiFieldContent>
+      <UiFieldTitle>
+        Body
+      </UiFieldTitle>
 
-        <UiFieldLabel for="body">
-          Body
-        </UiFieldLabel>
+      <UiTextarea
+        id="body"
+        v-model="QRCodeMailData.body"
+        autocomplete="off"
+        type="text"
+        placeholder="Email Body"
+        class="max-h-[calc(100dvh-26rem)] flex-1"
+      />
 
-        <UiTextarea
-          id="body"
-          v-model="QRCodeMailData.body"
-          autocomplete="off"
-          type="text"
-          placeholder="Email Body"
-          class="max-h-[calc(100dvh-26rem)] flex-1"
-        />
-
-
-      </UiFieldContent>
   
     </UiField>
   

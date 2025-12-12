@@ -25,122 +25,102 @@ const showPassword = ref(false)
       orientation="responsive"
     >
 
-      <UiFieldContent>
+      <UiFieldTitle>
+        SSID
+      </UiFieldTitle>
 
-        <UiFieldLabel for="ssid">
-          SSID
-        </UiFieldLabel>
+      <UiInput
+        id="ssid"
+        v-model="QRCodeWifiData.ssid"
+        autocomplete="on"
+        type="text"
+        placeholder="SSID"
+      />
 
-        <UiInput
-          id="ssid"
-          v-model="QRCodeWifiData.ssid"
-          autocomplete="on"
-          type="text"
-          placeholder="SSID"
-        />
-
-      </UiFieldContent>
-  
     </UiField>
     
 
     <UiField
-      name="authentication"
       orientation="responsive"
     >
 
-      <UiFieldContent>
+      <UiFieldTitle>
+        Authentication
+      </UiFieldTitle>
 
-        <UiFieldLabel for="authentication">
-          Authentication
-        </UiFieldLabel>
-
-        <UiSelect
+      <UiSelect
+        id="authentication"
+        v-model="QRCodeWifiData.auth"
+      >
+        <UiSelectTrigger
           id="authentication"
-          v-model="QRCodeWifiData.auth"
+          class="w-full"
         >
-          <UiSelectTrigger
-            id="authentication"
-            class="w-full"
+          <UiSelectValue placeholder="Authentication" />
+        </UiSelectTrigger>
+
+        <UiSelectContent position="item-aligned">
+          <UiSelectItem
+            v-for="authenticationType in authenticationTypes"
+            :key="authenticationType.value"
+            :value="authenticationType.value"
           >
-            <UiSelectValue placeholder="Authentication" />
-          </UiSelectTrigger>
-
-          <UiSelectContent position="item-aligned">
-            <UiSelectItem
-              v-for="authenticationType in authenticationTypes"
-              :key="authenticationType.value"
-              :value="authenticationType.value"
-            >
-              {{ authenticationType.label }}
-            </UiSelectItem>
-          </UiSelectContent>
-        </UiSelect>
-
-
-      </UiFieldContent>
+            {{ authenticationType.label }}
+          </UiSelectItem>
+        </UiSelectContent>
+      </UiSelect>
 
     </UiField>
 
 
     <UiField
-      name="password"
       orientation="responsive"
     >
 
-      <UiFieldContent>
+      <UiFieldTitle>
+        Password
+      </UiFieldTitle>
 
-        <UiFieldLabel for="password">
-          Password
-        </UiFieldLabel>
+      <UiInputGroup>
 
-        <UiInputGroup>
-
-          <UiInputGroupInput
-            id="password"
-            v-model="QRCodeWifiData.password"
-            autocomplete="current-password"
-            :type="showPassword ? 'text' : 'password'"
-            placeholder="Password"
-          />
-
-          <UiInputGroupAddon align="inline-end">
-            <UiButton
-              variant="ghost"
-              size="icon"
-              @click.prevent="showPassword = !showPassword"
-            >
-              <Icon :name="showPassword ? 'lucide:eye' : 'lucide:eye-off'" />
-            </UiButton>
-          </UiInputGroupAddon>
-
-        </UiInputGroup>
-
-      </UiFieldContent>
-  
-    </UiField>
-
-
-    <UiField
-      name="hidden"
-      orientation="horizontal"
-    >
-
-      <UiFieldContent>
-
-        <UiFieldLabel for="hidden">
-          Hidden Network
-        </UiFieldLabel>
-
-        <UiSwitch
-          id="hidden"
-          v-model="QRCodeWifiData.hidden"
-          name="hidden"
-          class="cursor-pointer"
+        <UiInputGroupInput
+          id="password"
+          v-model="QRCodeWifiData.password"
+          autocomplete="current-password"
+          :type="showPassword ? 'text' : 'password'"
+          placeholder="Password"
         />
 
-      </UiFieldContent>
-     
+        <UiInputGroupAddon align="inline-end">
+          <UiButton
+            variant="ghost"
+            size="icon"
+            @click.prevent="showPassword = !showPassword"
+          >
+            <Icon :name="showPassword ? 'lucide:eye' : 'lucide:eye-off'" />
+          </UiButton>
+        </UiInputGroupAddon>
+
+      </UiInputGroup>
+      
+    </UiField>
+
+
+    <UiField
+      orientation="horizontal"
+    >
+      
+      <UiFieldTitle>
+        Hidden Network
+      </UiFieldTitle>
+
+      <UiSwitch
+        id="hidden"
+        v-model="QRCodeWifiData.hidden"
+        name="hidden"
+        class="cursor-pointer"
+      />
+      
     </UiField>
 
   </form>

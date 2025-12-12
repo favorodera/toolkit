@@ -7,21 +7,15 @@ const { QRCodeTelData } = storeToRefs(useQRCodeStore())
   
     <UiField
       orientation="responsive"
-      name="tel"
     >
-  
-      <UiFieldContent>
-  
-        <UiInput
-          id="tel"
-          v-model="QRCodeTelData"
-          autocomplete="tel"
-          placeholder="Enter or paste phone number"
-          type="tel"
-        />
-        
-      </UiFieldContent>
-            
+      <UiInput
+        id="tel"
+        v-model="QRCodeTelData"
+        autocomplete="tel"
+        placeholder="Enter or paste phone number"
+        type="tel"
+      />
+
     </UiField>
   
   </form>

@@ -7,21 +7,16 @@ const { QRCodeURLData } = storeToRefs(useQRCodeStore())
 
     <UiField
       orientation="responsive"
-      name="url"
     >
 
-      <UiFieldContent>
+      <UiInput
+        id="url"
+        v-model="QRCodeURLData"
+        autocomplete="url"
+        placeholder="Enter or paste url"
+        type="url"
+      />
 
-        <UiInput
-          id="url"
-          v-model="QRCodeURLData"
-          autocomplete="url"
-          placeholder="Enter or paste url"
-          type="url"
-        />
-
-      </UiFieldContent>
-          
     </UiField>
 
   </form>

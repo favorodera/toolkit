@@ -12,155 +12,147 @@ const { QRCodeContactData } = storeToRefs(useQRCodeStore())
   >
   
     <UiField
-      name="title"
       orientation="responsive"
     >
-      <UiFieldContent>
-        <UiFieldLabel for="title">
-          Title
-        </UiFieldLabel>
+      
+      <UiFieldTitle>
+        Title
+      </UiFieldTitle>
   
-        <UiInput
-          id="title"
-          v-model="QRCodeContactData.title"
-          autocomplete="honorific-prefix"
-          type="text"
-          placeholder="Title"
-        />
-      </UiFieldContent>
+      <UiInput
+        id="title"
+        v-model="QRCodeContactData.title"
+        autocomplete="honorific-prefix"
+        type="text"
+        placeholder="Title"
+      />
+      
     </UiField>
   
     <UiField
-      name="firstName"
       orientation="responsive"
     >
-      <UiFieldContent>
-        <UiFieldLabel for="firstName">
-          First Name
-        </UiFieldLabel>
+      
+      <UiFieldTitle>
+        First Name
+      </UiFieldTitle>
   
-        <UiInput
-          id="firstName"
-          v-model="QRCodeContactData.firstName"
-          autocomplete="given-name"
-          type="text"
-          placeholder="First Name"
-        />
-      </UiFieldContent>
+      <UiInput
+        id="firstName"
+        v-model="QRCodeContactData.firstName"
+        autocomplete="given-name"
+        type="text"
+        placeholder="First Name"
+      />
+      
     </UiField>
   
     <UiField
-      name="lastName"
       orientation="responsive"
     >
-      <UiFieldContent>
-        <UiFieldLabel for="lastName">
-          Last Name
-        </UiFieldLabel>
+      
+      <UiFieldTitle>
+        Last Name
+      </UiFieldTitle>
   
-        <UiInput
-          id="lastName"
-          v-model="QRCodeContactData.lastName"
-          autocomplete="family-name"
-          type="text"
-          placeholder="Last Name"
-        />
-      </UiFieldContent>
+      <UiInput
+        id="lastName"
+        v-model="QRCodeContactData.lastName"
+        autocomplete="family-name"
+        type="text"
+        placeholder="Last Name"
+      />
+      
     </UiField>
   
     <UiField
-      name="organization"
       orientation="responsive"
     >
-      <UiFieldContent>
-        <UiFieldLabel for="organization">
-          Organization
-        </UiFieldLabel>
+      
+      <UiFieldTitle>
+        Organization
+      </UiFieldTitle>
   
-        <UiInput
-          id="organization"
-          v-model="QRCodeContactData.organization"
-          autocomplete="organization"
-          type="text"
-          placeholder="Organization"
-        />
-      </UiFieldContent>
+      <UiInput
+        id="organization"
+        v-model="QRCodeContactData.organization"
+        autocomplete="organization"
+        type="text"
+        placeholder="Organization"
+      />
+      
     </UiField>
   
     <UiField
-      name="email"
       orientation="responsive"
     >
-      <UiFieldContent>
-        <UiFieldLabel for="email">
-          Email
-        </UiFieldLabel>
+      
+      <UiFieldTitle>
+        Email
+      </UiFieldTitle>
   
-        <UiInput
-          id="email"
-          v-model="QRCodeContactData.email"
-          autocomplete="email"
-          type="email"
-          placeholder="Email"
-        />
-      </UiFieldContent>
+      <UiInput
+        id="email"
+        v-model="QRCodeContactData.email"
+        autocomplete="email"
+        type="email"
+        placeholder="Email"
+      />
+      
     </UiField>
   
     <UiField
-      name="phoneNumber"
       orientation="responsive"
     >
-      <UiFieldContent>
-        <UiFieldLabel for="phoneNumber">
-          Phone Number
-        </UiFieldLabel>
+      
+      <UiFieldTitle>
+        Phone Number
+      </UiFieldTitle>
   
-        <UiInput
-          id="phoneNumber"
-          v-model="QRCodeContactData.phoneNumber"
-          autocomplete="tel"
-          type="tel"
-          placeholder="Phone Number"
-        />
-      </UiFieldContent>
+      <UiInput
+        id="phoneNumber"
+        v-model="QRCodeContactData.phoneNumber"
+        autocomplete="tel"
+        type="tel"
+        placeholder="Phone Number"
+      />
+      
     </UiField>
   
     <UiField
-      name="address"
       orientation="responsive"
     >
-      <UiFieldContent>
-        <UiFieldLabel for="address">
-          Address
-        </UiFieldLabel>
+      
+      <UiFieldTitle>
+        Address
+      </UiFieldTitle>
   
-        <UiInput
-          id="address"
-          v-model="QRCodeContactData.address"
-          autocomplete="street-address"
-          type="text"
-          placeholder="Address"
-        />
-      </UiFieldContent>
+      <UiInput
+        id="address"
+        v-model="QRCodeContactData.address"
+        autocomplete="street-address"
+        type="text"
+        placeholder="Address"
+      />
+      
     </UiField>
   
     <UiField
-      name="website"
       orientation="responsive"
     >
-      <UiFieldContent>
-        <UiFieldLabel for="website">
-          Website
-        </UiFieldLabel>
+      
+      <UiFieldTitle>
+        Website
+      </UiFieldTitle>
   
-        <UiInput
-          id="website"
-          v-model="QRCodeContactData.website"
-          autocomplete="url"
-          type="url"
-          placeholder="Website"
-        />
-      </UiFieldContent>
+      <UiInput
+        id="website"
+        v-model="QRCodeContactData.website"
+        autocomplete="url"
+        type="url"
+        placeholder="Website"
+      />
+      
     </UiField>
   
   </form>
