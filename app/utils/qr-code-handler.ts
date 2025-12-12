@@ -53,6 +53,12 @@ const contactSchema = z.object({
   organization: z.string('Invalid input').max(100, 'Organization is too long').optional(),
 })
 
+const locationSchema = z.object({
+  latitude: z.number('Invalid input'),
+  longitude: z.number('Invalid input'),
+  altitude: z.number('Invalid input').optional(),
+})
+
 function downloadQRCode(fileType: 'svg' | 'png', canvasWidth: number[], dataType: QRCodeDataType, dataUrl?: string) {
   if (!dataUrl) return
 
@@ -121,6 +127,7 @@ export default function () {
       createUrlSchema,
       createTextSchema,
       createTelSchema,
+      locationSchema,
     },
     downloadQRCode,
   }
@@ -129,3 +136,5 @@ export default function () {
 export type WifiSchema = z.output<typeof wifiSchema>
 export type MailSchema = z.output<typeof mailSchema>
 export type ContactSchema = z.output<typeof contactSchema>
+export type LocationSchema = z.output<typeof locationSchema>
+
