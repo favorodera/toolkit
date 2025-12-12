@@ -175,11 +175,11 @@ const { downloadQRCode } = qrCodeHandler()
 
         <div
           class="
-            grid aspect-square w-full place-items-center rounded-md border
-            border-border p-4
+            mx-auto grid aspect-square h-full max-h-[350px] w-full max-w-[350px]
+            place-items-center rounded-md border border-border p-4
           "
           :class="{
-            'bg-linear-to-b from-muted/50 from-30% to-background': !isValid,
+            'pointer-events-none opacity-50': !isValid,
           }"
         >
 
@@ -188,29 +188,16 @@ const { downloadQRCode } = qrCodeHandler()
             :src="QRCode.value"
             fit="cover"
             class="aspect-square max-w-full"
-            :style="{ width: QRCodeSettings.width }"
+            :width="QRCodeSettings.width[0]"
+            :height="QRCodeSettings.width[0]"
             alt="QR Code"
           />
 
-          <UiEmpty
+          <Icon
             v-else
-            class="
-              size-full
-              **:text-destructive
-            "
-          >
-            <UiEmptyMedia
-              variant="icon"
-            >
-              <Icon name="lucide:alert-circle" />
-            </UiEmptyMedia>
-
-            <UiEmptyHeader>
-              <UiEmptyTitle>Cannot Generate</UiEmptyTitle>
-              <UiEmptyDescription>Fix validation errors</UiEmptyDescription>
-            </UiEmptyHeader>
-
-          </UiEmpty>
+            name="lucide:qr-code"
+            class="size-full"
+          />
 
         </div>
 
@@ -307,77 +294,84 @@ const { downloadQRCode } = qrCodeHandler()
             md:grid-cols-2
           "
         >
-          <UiField name="error-correction-level">
+          <UiField>
 
-            <UiFieldContent>
+            <UiFieldTitle>
+              Error Correction Level
+            </UiFieldTitle>
 
-              <UiFieldLabel for="error-correction-level">
-                Error Correction Level
-              </UiFieldLabel>
+            <UiSelect
+              id="error-correction-level"
+              v-model:model-value="QRCodeSettings.errorCorrectionLevel"
+            >
 
-              <UiSelect
+              <UiSelectTrigger
                 id="error-correction-level"
-                v-model:model-value="QRCodeSettings.errorCorrectionLevel"
+                class="w-full"
+                :disabled="!isValid"
               >
+                <UiSelectValue />
+              </UiSelectTrigger>
 
-                <UiSelectTrigger
-                  id="error-correction-level"
-                  class="w-full"
-                  :disabled="!isValid"
+              <UiSelectContent>
+                <UiSelectItem
+                  v-for="level in errorCorrectionLevels"
+                  :key="level.value"
+                  :value="level.value"
                 >
-                  <UiSelectValue />
-                </UiSelectTrigger>
+                  {{ level.label }}
+                </UiSelectItem>
+              </UiSelectContent>
 
-                <UiSelectContent>
-                  <UiSelectItem
-                    v-for="level in errorCorrectionLevels"
-                    :key="level.value"
-                    :value="level.value"
-                  >
-                    {{ level.label }}
-                  </UiSelectItem>
-                </UiSelectContent>
-
-              </UiSelect>
-
-            </UiFieldContent>
+            </UiSelect>
 
           </UiField>
 
-          <UiField name="margin">
-            <UiFieldContent>
+          <UiField>
 
-              <UiFieldLabel for="margin">
+            <UiFieldContent class="flex-none flex-row justify-between">
+
+              <UiFieldTitle>
                 Margin
-              </UiFieldLabel>
+              </UiFieldTitle>
 
-              <UiSlider
-                id="margin"
-                v-model="QRCodeSettings.margin"
-                :min="1"
-                :max="16"
-                :disabled="!isValid"
-              />
+              <UiFieldDescription>
+                {{ QRCodeSettings.margin[0] }}
+              </UiFieldDescription>
 
             </UiFieldContent>
+
+            <UiSlider
+              id="margin"
+              v-model="QRCodeSettings.margin"
+              :min="1"
+              :max="16"
+              :disabled="!isValid"
+            />
+
           </UiField>
 
-          <UiField name="width">
-            <UiFieldContent>
+          <UiField>
 
-              <UiFieldLabel for="width">
+            <UiFieldContent class="flex-none flex-row justify-between">
+
+              <UiFieldTitle>
                 Width
-              </UiFieldLabel>
+              </UiFieldTitle>
 
-              <UiSlider
-                id="width"
-                v-model="QRCodeSettings.width"
-                :min="1"
-                :max="1024"
-                :disabled="!isValid"
-              />
+              <UiFieldDescription>
+                {{ QRCodeSettings.width[0] }}
+              </UiFieldDescription>
 
             </UiFieldContent>
+
+            <UiSlider
+              id="width"
+              v-model="QRCodeSettings.width"
+              :min="1"
+              :max="1024"
+              :disabled="!isValid"
+            />
           </UiField>
 
         </form>

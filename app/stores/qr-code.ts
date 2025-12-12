@@ -48,7 +48,7 @@ export const useQRCodeStore = defineStore('qr-code-store', () => {
   const QRCodeSettings = reactive<QRCodeSettings>({
     errorCorrectionLevel: 'H',
     margin: [3],
-    width: [256],
+    width: [300],
   })
 
   // Validation state
