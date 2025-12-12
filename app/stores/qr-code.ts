@@ -8,6 +8,7 @@ const {
     createUrlSchema,
     createTextSchema,
     createTelSchema,
+    locationSchema,
   },
   SAFE_LIMITS,
   QR_CODE_BYTE_LIMITS,
@@ -43,6 +44,12 @@ export const useQRCodeStore = defineStore('qr-code-store', () => {
     address: '',
     website: '',
     organization: '',
+  })
+
+  const QRCodeLocationData = reactive<LocationSchema>({
+    latitude: 0.000000,
+    longitude: 0.000000,
+    altitude: 0.0,
   })
 
   const QRCodeSettings = reactive<QRCodeSettings>({
@@ -118,6 +125,14 @@ export const useQRCodeStore = defineStore('qr-code-store', () => {
 
         case 'contact': {
           const result = contactSchema.safeParse(QRCodeContactData)
+          if (!result.success) {
+            validationErrors.value = result.error.issues.map(error => error.message)
+          }
+          break
+        }
+
+        case 'location': {
+          const result = locationSchema.safeParse(QRCodeLocationData)
           if (!result.success) {
             validationErrors.value = result.error.issues.map(error => error.message)
           }
@@ -262,6 +277,33 @@ export const useQRCodeStore = defineStore('qr-code-store', () => {
           if (website) parts.push(`URL:${website}`)
           
           dataString = `BEGIN:VCARD\nVERSION:3.0\n${parts.join('\n')}\nEND:VCARD`
+        }
+        break
+      }
+
+      case 'location': {
+        const { latitude, longitude, altitude } = QRCodeLocationData
+        
+        // Check if required fields are valid numbers
+        if (
+          typeof latitude !== 'number'
+          || typeof longitude !== 'number'
+          || isNaN(latitude)
+          || isNaN(longitude)
+        ) {
+          dataString = ' '
+        } else {
+          // Format coordinates to 6 decimal places
+          const lat = latitude.toFixed(6)
+          const lng = longitude.toFixed(6)
+          
+          // geo:latitude,longitude,altitude format
+          if (altitude !== undefined && !isNaN(altitude)) {
+            const alt = altitude.toFixed(1)
+            dataString = `geo:${lat},${lng},${alt}`
+          } else {
+            dataString = `geo:${lat},${lng}`
+          }
         }
         break
       }
