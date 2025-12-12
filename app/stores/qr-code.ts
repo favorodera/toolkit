@@ -337,6 +337,7 @@ export const useQRCodeStore = defineStore('qr-code-store', () => {
     QRCodeMailData,
     QRCodeTextData,
     QRCodeTelData,
+    QRCodeLocationData,
     QRCodeContactData,
     QRCodeDataString,
     QRCode,
