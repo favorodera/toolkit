@@ -4,7 +4,7 @@ definePageMeta({
   toolName: 'Password Generator',
 })
   
-useSeoMeta({ ...toolsSeo('passwordGenerator') })
+useSeoMeta({ ...toolsSeo('Password Generator') })
   
 const state = reactive({
   length: [4],

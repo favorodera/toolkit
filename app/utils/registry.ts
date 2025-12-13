@@ -1,34 +1,29 @@
 export const registry = [
   {
-    id: 'wordCounter',
     name: 'Word Counter',
     description: 'Count words, characters, sentences, and paragraphs.',
     icon: 'lucide:book-a',
     path: '/tools/word-counter',
   },
   {
-    id: 'caseConverter',
-    name: 'Case Converter',
+    name: 'Text Case Converter',
     description: 'Convert text between different cases.',
     icon: 'lucide:type',
     path: '/tools/case-converter',
   },
   {
-    id: 'colorPicker',
     name: 'Color Picker',
     description: 'Extract palettes from images and convert color formats.',
     icon: 'lucide:palette',
     path: '/tools/color-picker',
   },
   {
-    id: 'qrCodeGenerator',
     name: 'QR Code Generator',
     description: 'Create QR codes for URLs, text, and other types of data',
     icon: 'lucide:qr-code',
     path: '/tools/qr-code-generator',
   },
   {
-    id: 'passwordGenerator',
     name: 'Password Generator',
     description: 'Generate secure, random passwords with customizable options.',
     icon: 'lucide:lock',

@@ -6,7 +6,7 @@ definePageMeta({
   toolName: 'Word Counter',
 })
 
-useSeoMeta({ ...toolsSeo('wordCounter') })
+useSeoMeta({ ...toolsSeo('Word Counter') })
 
 const input = ref('')
 

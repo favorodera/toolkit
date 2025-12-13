@@ -4,7 +4,7 @@ definePageMeta({
   toolName: 'Color Picker',
 })
 
-useSeoMeta({ ...toolsSeo('colorPicker') })
+useSeoMeta({ ...toolsSeo('Color Picker') })
 
 const maxSizeMB = ref(200)
 const maxSize = computed(() => maxSizeMB.value * 1024 * 1024)

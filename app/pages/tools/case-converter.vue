@@ -6,7 +6,7 @@ definePageMeta({
   toolName: 'Text Case Converter',
 })
 
-useSeoMeta({ ...toolsSeo('caseConverter') })
+useSeoMeta({ ...toolsSeo('Text Case Converter') })
 
 const mainCaseTypes = ref<ChangeCaseType[]>([
   'noCase',

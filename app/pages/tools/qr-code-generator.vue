@@ -6,7 +6,7 @@ definePageMeta({
   toolName: 'QR Code Generator',
 })
   
-useSeoMeta({ ...toolsSeo('qrCodeGenerator') })
+useSeoMeta({ ...toolsSeo('QR Code Generator') })
 
 const tabs: { value: QRCodeDataType, icon: string }[] = [
   { value: 'url', icon: 'lucide:link-2' },

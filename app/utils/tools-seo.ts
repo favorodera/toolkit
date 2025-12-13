@@ -1,5 +1,5 @@
-export default function (toolId: Registry[number]['id']) {
-  const tool = registry.find(tool => tool.id === toolId)
+export default function (name: Registry[number]['name']) {
+  const tool = registry.find(tool => tool.name === name)
 
   if (!tool) return {}
 
