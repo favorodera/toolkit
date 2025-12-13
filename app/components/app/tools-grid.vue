@@ -1,15 +1,7 @@
 <script lang="ts" setup>
 import { type MotionProps, stagger } from 'motion-v'
 
-defineProps<{
-  tools: {
-    id: string
-    name: string
-    description: string
-    icon: string
-    path: string
-  }[]
-}>()
+const props = defineProps<{ displayAmount: number | 'all' }>()
 
 const animateParent = ref<MotionProps['variants']>({
   initial: {},
@@ -33,6 +25,8 @@ const animateChild = ref<MotionProps['variants']>({
     },
   },
 })
+
+const tools = computed(() => registry.slice(0, props.displayAmount === 'all' ? registry.length : props.displayAmount))
 </script>
 
 <template>
