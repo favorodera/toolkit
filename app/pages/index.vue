@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-const lastSixTools = computed(() => registry.slice(-6))
 const newTool = computed(() => registry[registry.length - 1])
 </script>
   
@@ -36,6 +35,6 @@ const newTool = computed(() => registry[registry.length - 1])
       </template>
     </AppHero>
   
-    <AppToolsGrid :tools="lastSixTools" />
+    <AppToolsGrid :display-amount="6" />
   </div>
 </template>
