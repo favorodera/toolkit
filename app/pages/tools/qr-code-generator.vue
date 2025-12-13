@@ -341,6 +341,7 @@ const { downloadQRCode } = qrCodeHandler()
               v-model="QRCodeSettings.margin"
               :min="1"
               :max="16"
+              :step="1"
               :disabled="!isValid"
             />
 
@@ -365,6 +366,7 @@ const { downloadQRCode } = qrCodeHandler()
               v-model="QRCodeSettings.width"
               :min="1"
               :max="1024"
+              :step="1"
               :disabled="!isValid"
             />
           </UiField>
