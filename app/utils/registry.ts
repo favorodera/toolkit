@@ -34,7 +34,7 @@ export const registry = [
     icon: 'lucide:lock',
     path: '/tools/password-generator',
   },
-]
+] as const
 
 // { id: 'urlShortener', name: 'URL Shortener', description: 'Create short, shareable links from long URLs.', icon: 'lucide:link', path: '/tools/url-shortener' },
 // { id: 'jsonFormatter', name: 'JSON Formatter', description: 'Format, validate, and beautify JSON data.', icon: 'lucide:braces', path: '/tools/json-formatter' },
@@ -42,4 +42,5 @@ export const registry = [
 // { id: 'base64Encoder', name: 'Base64 Encoder', description: 'Encode and decode text or files to Base64.', icon: 'lucide:binary', path: '/tools/base64' },
 // { id: 'markdownPreview', name: 'Markdown Preview', description: 'Write and preview Markdown in real-time.', icon: 'lucide:file-text', path: '/tools/markdown-preview' },
 
+export type Registry = typeof registry
 export default registry
