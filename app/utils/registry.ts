@@ -29,6 +29,12 @@ export const registry = [
     icon: 'lucide:lock',
     path: '/tools/password-generator',
   },
+  {
+    name: 'UUID Generator',
+    description: 'Create universally unique identifiers (UUIDs) instantly.',
+    icon: 'lucide:hash',
+    path: '/tools/uuid-generator',
+  },
 ] as const
 
 // { id: 'urlShortener', name: 'URL Shortener', description: 'Create short, shareable links from long URLs.', icon: 'lucide:link', path: '/tools/url-shortener' },
